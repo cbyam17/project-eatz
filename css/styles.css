@@ -27,8 +27,10 @@ th {
 }
 
 div.background {
-  background-image: url('../img/pe-mock.png');
-  border: 2px solid black;
+  border: 1px solid black; 
+  background-image: url('../img/pe-banner.png');
+  background-size: cover;
+
 }
 
 div.transbox {
@@ -102,27 +104,28 @@ div.transbox h3 {
 
 .flex-container-nowrap > div {
   margin: 10px;
- 
   width: 100%;
 }
 
 .flex-container-wrap {
   display: flex;
   flex-wrap: wrap;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 
 .flex-container-wrap > div {
-  margin: 10px;
+  margin: 5px;
   background-color: white;
   width: 100%;
 }
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  background-color: #217028;
+  background-color: #383e4b;
   transition: 0.3s;
   width: 32%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .card:hover {
@@ -131,7 +134,7 @@ div.transbox h3 {
 
 .container {
   padding: 2px 10px;
-  background-color: #217028;
+  background-color: #383e4b;
   color: white;
   text-align: center;
 }
@@ -157,7 +160,7 @@ body {
 	background-color: #fff;
 	color: #000;
 	line-height: 1.5;
-	font-family: 'Roboto',sans-serif;
+	font-family: Arial, Helvetica, sans-serif;;
 	font-weight: 400;
   overflow-x:hidden;
   letter-spacing: 0.075em;
@@ -298,7 +301,8 @@ a {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #217028;
+  background-color: #383e4b;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-bar-li {
@@ -315,7 +319,7 @@ a {
 
 /* Change the link color to #111 (black) on hover */
 .nav-bar-li a:hover {
-  background-color: #013220;
+  background-color: #000000;
 }
 
 .active {
@@ -503,7 +507,7 @@ a {
 
 .nav-slide div p {
     color: #008ED6;
-    font-family: "Lucida Bright",Georgia,serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 75%;
     font-style: italic;
     margin: 0;
