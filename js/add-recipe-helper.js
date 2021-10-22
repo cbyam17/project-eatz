@@ -34,11 +34,10 @@ $(document).ready(function () {
         var cols = "";
 
         // forms that will be added
-        cols += '<td><input type="number" class="form-control-number" name = "ingredients[][amount]" id="amount"/></td>';
-		cols += '<td><input type="text" class="form-control" name = "ingredients[][ingredient]" id="name"/></td>';
-        //cols += '<td><input type="text" class="form-control" name = "ingredients[][measure]" id="measure"/></td>';        
-		cols += '<td><input type="text" name = "ingredients[][notes]" id="notes" class="form-control"></input></td>';
-        cols += '<td><button class="delete-button"> <i class="fa fa-minus"></i></button>';
+        cols += '<td><input type="number" name="ingredients[][amount]" id="amount"  class="form-control-number"/></td>';
+		cols += '<td><input type="text" name="ingredients[][ingredient]" id="name" class="form-control" size="32"/></td>';       
+		cols += '<td><input type="text" name="ingredients[][notes]" id="notes" class="form-control" size="32"/></td>';
+        cols += '<td><button class="delete-button"> <i class="fa fa-minus"></i></button></td>';
         newRow.append(cols);
         $("#ingredientsTable tbody").append(newRow);
 		return false;
@@ -50,8 +49,8 @@ $(document).ready(function () {
         var cols = "";
 
         // forms that will be added
-        cols += '<td> <textarea class="form-control" rows="2" cols="61" name="directions[]" id="direction"></textarea></td>';
-        cols += '<td><button class="delete-button"> <i class="fa fa-minus"></i></button>';
+        cols += '<td><textarea class="form-control" rows="2" cols="81" name="directions[]" id="direction"></textarea></td>';
+        cols += '<td><button class="delete-button"> <i class="fa fa-minus"></i></button></td>';
         newRow.append(cols);
         $("#directionsTable tbody").append(newRow);
 		return false;
@@ -70,9 +69,8 @@ $(document).ready(function () {
 		var recipeID = '';
 		var cat = '';
 		
-		
-		var postUrl = 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe';
-		var authToken = '0eb6b64d-4aee-40d9-908d-4846044ee0f0';
+		var postUrl = 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe'; //createRecipeUrl
+		var authToken = '0eb6b64d-4aee-40d9-908d-4846044ee0f0'; //authToken
 		
 		// Example POST method implementation:
 		async function postData(url = '', data = {}) {
