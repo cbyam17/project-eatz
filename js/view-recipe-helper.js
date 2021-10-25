@@ -1,10 +1,12 @@
 		
+		require('dotenv').config();
+
 		//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
 		//url will look something like this: .../view-recipe.html?recipeId=ZsZFXcMmtvXFQ-8xoiWR6w
 		var queryString = window.location.href.split('/').pop();
 		var id = queryString.split('=').pop();
-		var authToken = '0eb6b64d-4aee-40d9-908d-4846044ee0f0';
-		var req = 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe/' + id;
+		var authToken = process.env.API_AUTH_TOKEN; //'0eb6b64d-4aee-40d9-908d-4846044ee0f0';
+		var req = process.env.API_URL + '/recipe/' + id; //https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe/' + id;
 		
 		//get recipe details then parse response and build html for page
 		fetch(req, {
