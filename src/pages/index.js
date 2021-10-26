@@ -1,4 +1,5 @@
 import * as React from "react"
+import styled from "styled-components"
 
 console.log(process.env.GATSBY_API_URL)
 console.log(process.env.GATSBY_API_AUTH_TOKEN)
@@ -81,6 +82,28 @@ const badgeStyle = {
   lineHeight: 1,
 }
 
+
+//styled components
+const FlexContainerNoWrap = styled.div`
+  display: flex;
+  flexWrap: nowrap;
+`;
+
+const FlexContainerNoWrapElement = styled.div`
+  margin: 10px;
+  width: 100%;
+`;
+
+const Card = styled.div`
+  height: 100px;
+  border-radius: 5px;
+  background-color: #00D8D8;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  &:hover {
+   background-color: yellow;
+ }
+`;
+
 // data
 const links = [
   {
@@ -134,19 +157,10 @@ const IndexPage = () => {
     <main style={pageStyles}>
       <title>Project Eatz</title>
       <h1 style={headingStyles}>
-        Congratulations
+        Welcome to
         <br />
-        <span style={headingAccentStyles}>— you just made a Gatsby site! </span>
-        <span role="img" aria-label="Party popper emojis">
-          🎉🎉🎉
-        </span>
+        <span style={headingAccentStyles}> PROJECT EATZ </span>
       </h1>
-      <p style={paragraphStyles}>
-        API URL: {process.env.GATSBY_API_URL}
-      </p>
-      <p style={paragraphStyles}>
-        API Auth Token: {process.env.GATSBY_API_AUTH_TOKEN}
-      </p>
       <p style={paragraphStyles}>
         Edit <code style={codeStyles}>src/pages/index.js</code> to see this page
         update in real-time.{" "}
@@ -154,6 +168,29 @@ const IndexPage = () => {
           😎
         </span>
       </p>
+      <FlexContainerNoWrap>
+        <FlexContainerNoWrapElement>
+          <Card>
+            <h1 style={headingStyles}>
+              Add a Recipe
+            </h1>
+          </Card>
+        </FlexContainerNoWrapElement>
+        <FlexContainerNoWrapElement>
+          <Card>
+            <h1 style={headingStyles}>
+              Browse Recipes
+            </h1>
+          </Card>
+        </FlexContainerNoWrapElement>
+        <FlexContainerNoWrapElement>
+          <Card>
+            <h1 style={headingStyles}>
+              View a Random Recipe
+            </h1>
+          </Card>
+        </FlexContainerNoWrapElement>
+      </FlexContainerNoWrap>
       <ul style={listStyles}>
         <li style={docLinkStyle}>
           <a
