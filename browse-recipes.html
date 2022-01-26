@@ -7,11 +7,11 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <script type="text/javascript" src="js/jquery.min.js"></script> 
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
+  <script type="text/javascript" src="js/browse-recipe-helper.js"></script> 
 </head>
 
-<body>
-
-	<!-- nav bar -->
+<body id=recipeBody>
 	<section>
 		<ul id="navBar" class="nav-bar-ul">
 		  <li class="nav-bar-li"><a href="index.html">Home</a></li>
@@ -30,7 +30,7 @@
 		
 		<div class="flex-container-nowrap">
 			<div class="card">
-				<a href="index.html">
+				<a href="javascript:getRecipeList('App')">
 					<div class="container" id="apps">
 					<br>
 						<h3><strong>Apps</strong></h3>
@@ -39,7 +39,7 @@
 				</a>
 			</div>
 			<div class="card">
-				<a href="index.html">
+				<a href="javascript:getRecipeList('Main')">
 					<div class="container" id="mains">
 					<br>
 						<h3><strong>Mains</strong></h3>
@@ -48,7 +48,7 @@
 				</a>
 			</div>
 			<div class="card">
-				<a href="index.html">
+				<a href="javascript:getRecipeList('Side')">
 					<div class="container" id="randomRecipe">
 					<br>
 						<h3><strong>Sides</strong></h3>
@@ -60,7 +60,7 @@
 		
 		<div class="flex-container-nowrap">
 			<div class="card">
-				<a href="index.html">
+				<a href="javascript:getRecipeList('Dessert')">
 					<div class="container" id="desserts">
 					<br>
 						<h3><strong>Desserts</strong></h3>
@@ -69,7 +69,7 @@
 				</a>
 			</div>
 			<div class="card">
-				<a href="index.html">
+				<a href="javascript:getRecipeList('Drink')">
 					<div class="container" id="drinks">
 					<br>
 						<h3><strong>Drinks</strong></h3>
@@ -78,7 +78,7 @@
 				</a>
 			</div>
 			<div class="card">
-				<a href="index.html">
+				<a href="javascript:getRecipeList('Other')">
 					<div class="container" id="other">
 					<br>
 						<h3><strong>Others</strong></h3>
@@ -89,28 +89,19 @@
 		</div>
 		
 		<div class="flex-container-nowrap">
-			<div>
-				<h3><strong> Placeholder for filter results </strong></h3>
-				<table>
-					<thead>
-						<tr>
-							<td>Recipe Name</td>
-							<td>Description</td>
-							<td>Category</td>
-							<td>Image</td>
-						</tr>
-					</thead>
-				</table>
-			</div>
+			<div id=searchContent>
+				<div id=searchTotal class=searchTotal >	
+				</div>
+				<div id=recipeTable class="search-results-content-results-wrapper grid-view ">
+				</div>
+			</div>     
+		</div>
+		<div class="flex-container-nowrap">
+			<a href="index.html">
+				<input type="button" class="back-button" id="goBack" value="Home"/>
+			</a>
 		</div>
 		
-		<div class="flex-container-nowrap">
-			<div>
-				<a href="index.html">
-					<input type="button" class="back-button" id="goBack" value="Home"/>
-				</a>
-			</div>
-		</div>
 	</section> 
 
  

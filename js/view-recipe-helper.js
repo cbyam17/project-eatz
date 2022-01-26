@@ -17,13 +17,20 @@
 		  .then(data => populateRecipeDetails(data));
 		
 		function populateRecipeDetails(dataJSON){
-			
 			//add recipe name
 			var tag = document.createElement("h1");
 			var text = document.createTextNode(dataJSON.recipeName);
 			tag.appendChild(text);
 			var element = document.getElementById("recipeName");
 			element.appendChild(tag);
+			
+			// Add image
+			var imgData = document.createElement("img");
+			var categoryKey = dataJSON.category + "/";
+			var recipeKey = categoryKey + id;
+			loadImage(recipeKey, imgData);
+			var element = document.getElementById("picture");
+			element.appendChild(imgData);
 			
 			//add recipe description
 			var tag = document.createElement("p");
@@ -84,6 +91,44 @@
 			table.appendChild(tableBody);
 			var element = document.getElementById("directions");
 			element.appendChild(table);
+
+			function loadImage (key, imgData) {
+				//Variables to get the picture from S3
+					var recipeBucketName = 'my-recipe-pictures';
+					AWS.config.region = 'us-east-2'; // Region
+					AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+					IdentityPoolId: 'us-east-2:e4c9746c-7ccc-487d-9e97-97771e73a0f2',});
+		
+				// Create a new service object
+				var s3 = new AWS.S3({
+					  apiVersion: '2006-03-01',
+					  params: {Bucket: recipeBucketName}
+				});
+	
+				s3.getObject({Bucket: recipeBucketName, Key: key}, function(err, data) {
+					// Handle any error and exit
+					if (err) {
+						if (err.statusCode == '404') { 
+							var element = document.getElementById("picture");
+							imgData.setAttribute('src', "img/NoPicture.jpg");
+							imgData.setAttribute('width', "200");
+							imgData.setAttribute('height', "200");
+						} else {
+						console.log(err);
+						}
+					} else {
+						var href = "https://s3." + AWS.config.region + ".amazonaws.com/";
+						var bucketUrl = href + recipeBucketName + "/";
+						var photoUrl = bucketUrl + key;
+						var element = document.getElementById("picture");
+						imgData.setAttribute('src', photoUrl);
+						imgData.setAttribute('width', "200");
+						imgData.setAttribute('height', "200");
+
+					}
+				});
+	
+			}
 		}
 		
 $(document).ready(function () {
