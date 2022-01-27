@@ -1,198 +1,95 @@
 <!DOCTYPE html>
-<html  >
+<html>
 <head>
-  <title>Add Recipe</title>
+  <title>ProjectEatz - Add Recipe</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/buttons.css">
-  <link rel="stylesheet" href="css/forms.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/jquery.serializejson.js"></script>
   <script type="text/javascript" src="js/add-recipe-helper.js"></script>
 </head>
-
 <body>
-
-	<!-- nav bar -->
-	<section>
-		<ul id="navBar" class="nav-bar-ul">
-		  <li class="nav-bar-li"><a href="index.html">Home</a></li>
-		  <li class="nav-bar-li"><a href="about-us.html">About Us</a></li>
-		  <li class="nav-bar-li"><a href="login.html">Login</a></li>
-		  <li class="nav-bar-li" style="float:right"><a onClick="showSearchBox()"><i class="fa fa-search w3-xlarge"></i></a></li>
-		</ul>
-	</section>
-	
-	<section>
-		<div class="flex-container-wrap">
-			<div class="flex-child-label"></div>
-				<div class=flex-child-title>
-					<h1><strong>Add a Recipe</strong></h1>
-				</div>
-		</div>
-		 <form class="form" name="addRecipeForm" id="addRecipeForm" accept-charset="utf-8" autocomplete="on">        
-			<!-- Recipe name form and headers for page -->
-	 
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-				<div class="flex-child-label" id=recipeName>
-					<label>Name</label>
-				</div>
-				<div class="flex-child-value">
-					<input type="text" placeholder="My Super Awesome Recipe" size="80" class="form-control" name="recipeName" id="recipeName">
-				</div>
-			</div>
-
-			<!-- Drop down bar menu for meal type -->
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-				
-				<div class="flex-child-label">
-					<label>Category</label>
-				</div>
-				<div class="flex-child-value">
-					<!-- <label class="sm-2" for="inlineformcustomselect"> Category </label> -->
-					<select class="form-control" name="category" id="category">
-						<option selected></option>
-						<option value="App">App</option>
-						<option value="Main">Main</option>
-						<option value="Side">Side</option>
-						<option value="Dessert">Dessert</option>
-						<option value="Drink">Drink</option>
-						<option value="Other">Other</option>
-					</select>
-				</div>
-				
-			</div>			
-			
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-				
-				<div class="flex-child-label" id="description">
-					<label>Description</label>
-				</div>
-				<div class="flex-child-value">
-					<textarea class="form-control" id="description" name="description" rows="5" cols="82" placeholder="This is the best recipe you will ever make"></textarea>
-				</div>
-				
-			</div>
-
-			<!-- Table which holds each ingredient -->
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-				
-				<div class="flex-child-label">
-					<label>Ingredients</label>
-				</div>
-				<div class="flex-child-value">
-					<div id = "ingredients" class="ingredients">
-						<table id="ingredientsTable" class="table ingr-list">
-							<!-- Headers-->
-							<thead class="form-control-thead">
-								<tr>
-									<td>Amount</td>
-									<td>Ingredient</td>
-									<td>Notes</td>
-								</tr>
-							</thead>
-							<!-- Preexisting forms -->
-							<tbody>
-								<tr>
-									<td>
-										<input type="number" placeholder="2" name = "ingredients[][amount]" id="amount"  class="form-control-number"/>
-									</td>
-									<td>
-										<input type="text" placeholder="Tbsp chili powder" name = "ingredients[][ingredient]" id="name" class="form-control" size="32"/>
-									</td>
-									<td>
-										<input type="text" name="ingredients[][notes]" id="notes" class="form-control" size="32"/>
-									</td>
-									<td><a class="delRowHolder"></a></td>
-								</tr>
-							</tbody>
-							<!-- Add Ingredient Button under table -->
-							<tfoot>
-								<tr>
-									<td colspan="1">
-										<button id="addIngredient" class="add-button"> <i class="fa fa-plus"></i></button>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-				
-			</div>
-			
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-				
-				<div class="flex-child-label">
-					<label>Directions</label>
-				</div>
-				<div class="flex-child-value">
-					<div class="directions">
-						<table id= "directionsTable" class="table ingr-list">
-							<!-- Headers-->
-							<!-- Preexisting forms -->
-							<tbody>
-								<tr>
-									<td>
-										 <textarea class="form-control" rows="2" cols="81" placeholder="Step 1" name="directions[]" id="direction"></textarea>
-									</td>
-									<td><a class="delRowHolder"></a></td>
-								</tr>
-							</tbody>
-							<!-- Add Instruction Button under table -->
-							<tfoot>
-								<tr>
-									<td colspan="1">
-										<button id="addDirection" class="add-button"> <i class="fa fa-plus"></i></button>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-				
-			</div>
-
-			<!-- Upload image of the meal -->
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-				
-				<div class="flex-child-label" id="picture">
-					<label>Image</label>
-				</div>
-				<div class="flex-child-value">
-					<div class="image-upload">
-						<label for="file-input">
-							<i class="fa fa-cloud-upload w3-xxlarge" style="color:#383e4b"></i>
-						</label>
-						<input id="file-input" type="file" name="imageLoader"/>
-					</div>
-				</div>
-				<div class="flex-child-value">
-					<canvas id="imageCanvas" width=100 height=100></canvas>
-				</div>
-				
-			</div>
-
-			<!-- submit button for the form to be sent -->
-			<div class="flex-container-wrap">
-				<div class="flex-child-label"></div>
-
-				<div class="flex-child-value" id="back">
-					<a href="index.html">
-						<input type="button" class="back-button" id="goBack" value="Cancel"/>
-					</a>
-					<input type="button" class="submit-button" id="submitRecipe" value="Create Recipe"/>
-			</div>
-			
-		</form>
-	</section>
-  
+  <form class="form" name="addRecipeForm" id="addRecipeForm" accept-charset="utf-8" autocomplete="on">
+    <h1>Add Recipe</h1>
+    <p>Name</p>
+    <input type="text" name="name" id="name" placeholder="my new recipe"/>
+    <p>Category</p>
+    <select name="category" id="category">
+      <option selected></option>
+      <option value="app">App</option>
+      <option value="main">Main</option>
+      <option value="side">Side</option>
+      <option value="dessert">Dessert</option>
+      <option value="drink">Drink</option>
+      <option value="other">Other</option>
+    </select>
+    <p>Description</p>
+    <textarea name="description" id="description" placeholder="this recipe is great for lunch or dinner"></textarea>
+    <p>Ingredients</p>
+    <table name="ingredientsTable" id="ingredientsTable">
+      <!-- ingredients table header -->
+      <thead>
+        <tr>
+          <td>Quantity</td>
+          <td>Ingredient</td>
+          <td>Notes</td>
+        </tr>
+      </thead>
+      <!-- ingredients table body -->
+      <tbody>
+        <tr>
+          <td>
+            <input type="number" name="ingredients[][quantity]" id="quantity" placeholder="2"/>
+          </td>
+          <td>
+            <input type="text" name="ingredients[][ingredient]" id="ingredient" placeholder="tsp dried oregano"/>
+          </td>
+          <td>
+            <textarea name="ingredients[][notes]" id="notes" placeholder="double if using fresh oregano"></textarea>
+          </td>
+          <td>
+            <input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="Delete"/>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <input type="button" id="addIngredientButton" value="Add"/>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <p>Steps</p>
+    <table name="stepsTable" id= "stepsTable">
+      <tbody>
+        <tr>
+          <td>
+             <textarea name="steps[]" id="step" placeholder="sautee chopped onions in oil over medium heat until translucent"></textarea>
+          </td>
+          <td>
+            <input type="button" id="deleteStepButton" class="deleteButtonClass" value="Delete"/>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <input type="button" id="addStepButton" value="Add"/>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <p>Image upload<p>
+    <input type="file" name="image" id="image"/>
+    <br>
+    <br>
+    <a href="index.html">
+      <input type="button" id="cancelButton" value="Cancel"/>
+    </a>
+    <input type="button" id="addRecipeButton" value="Submit"/>
+  </form>
 </body>
 </html>

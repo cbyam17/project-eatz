@@ -1,77 +1,75 @@
-	/* 
-   Javascript file for add-recipe.html
-   uses Jquery click commands to call functions and add columns to the table
-   Version: 1.0.1
+/*
+   javascript helper file for add-recipe.htmls
+	 contributors:
+	 	- matt: JQuery to dynamically add and remove table rows
+		- mike: persisting and fetching images in AWS S3
+		- chris: serializing form data and submitting RESTful POST request to create recipe
 */
 
-
-
-
 $(document).ready(function () {
-	//
-	// JAVASCRIPT to show image icon on screen after selection
-	var imageLoader = document.getElementById('file-input');
-	imageLoader.addEventListener('change', handleImage, false);
-	var canvas = document.getElementById('imageCanvas');
-	var ctx = canvas.getContext('2d');
 
-	function handleImage(e){
-		var reader = new FileReader();
-		reader.onload = function(event){
-			var img = new Image();
-			img.onload = function(){
-				ctx.drawImage(img,0,0,100,100);
-			}
-			img.src = event.target.result;
-		}
-		reader.readAsDataURL(e.target.files[0]);     
-	}
+	//function to collect form data and send request to create new recipe
+	$('#addRecipeButton').on('click', function(){
+		//capture form data as JSON object
+		var dataJSON = $('#addRecipeForm').serializeJSON();
+		console.log(dataJSON);
 
+		//TO DO: implement POST REST web request (see below snippet)
 
-    // function which is called when Div ID = addIngredient is clicked (AKA add Ingredient button)
-    $("#addIngredient").on("click", function () {
-    	var newRow = $("<tr>");
-        var cols = "";
+	});
 
-        // forms that will be added
-        cols += '<td><input type="number" name="ingredients[][amount]" id="amount"  class="form-control-number"/></td>';
-		cols += '<td><input type="text" name="ingredients[][ingredient]" id="name" class="form-control" size="32"/></td>';       
-		cols += '<td><input type="text" name="ingredients[][notes]" id="notes" class="form-control" size="32"/></td>';
-        cols += '<td><button class="delete-button"> <i class="fa fa-minus"></i></button></td>';
-        newRow.append(cols);
-        $("#ingredientsTable tbody").append(newRow);
+	//function to add new row to ingredients table
+	$('#addIngredientButton').on('click', function(){
+		var newRow = $('<tr>');
+		var cols = '';
+		//note: keep these in sync with ingredients table in add-recipe.html
+		cols += '<td><input type="number" name="ingredients[][quantity]" id="quantity"/></td>';
+		cols += '<td><input type="text" name="ingredients[][ingredient]" id="ingredient"/></td>';
+		cols += '<td><textarea name="ingredients[][notes]" id="notes"></textarea></td>';
+		cols += '<td><input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="Delete"/></td>';
+		newRow.append(cols);
+		$('#ingredientsTable tbody').append(newRow);
 		return false;
-    });
-	
-	// function which is called when Div ID = addInstruction is clicked (AKA add Instruction button)
-    $("#addDirection").on("click", function () {
-    	var newRow = $("<tr>");
-        var cols = "";
+	});
 
-        // forms that will be added
-        cols += '<td><textarea class="form-control" rows="2" cols="81" name="directions[]" id="direction"></textarea></td>';
-        cols += '<td><button class="delete-button"> <i class="fa fa-minus"></i></button></td>';
-        newRow.append(cols);
-        $("#directionsTable tbody").append(newRow);
+	//function to delete row of ingredients table
+	$('#ingredientsTable').on('click','.deleteButtonClass', function(){
+				$(this).closest('tr').remove();
+				return false;
+	});
+
+	//function to add new row to steps table
+	$('#addStepButton').on('click', function(){
+		var newRow = $('<tr>');
+		var cols = '';
+		//note: keep these in sync with steps table in add-recipe.html
+		cols += '<td><textarea name="steps[]" id="step"></textarea></td>';
+		cols += '<td><input type="button" id="deleteStepButton" class="deleteButtonClass" value="Delete"/></td>';
+		newRow.append(cols);
+		$('#stepsTable tbody').append(newRow);
 		return false;
-    });
-	
-    // function which is called when class = btnDel is called (AKA Remove Ingredient button)
-    $("table.ingr-list").on("click",".delete-button",function (event) {
-        $(this).closest("tr").remove();       
-        return false;
-    });
-	
+	});
+
+	//function to delete row of steps table
+	$('#stepsTable').on('click','.deleteButtonClass', function(){
+		$(this).closest('tr').remove();
+		return false;
+	});
+
+});
+
+	/* use this snippet to help with generating post request
+
 	$("#submitRecipe").on('click', function() {
-		
+
 		//serialize form data as formatted JSON object (this doesn't capture the picture)
 		var dataJSON = $('#addRecipeForm').serializeJSON();
 		var recipeID = '';
 		var cat = '';
-		
+
 		var postUrl = 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe'; //createRecipeUrl
 		var authToken = '0eb6b64d-4aee-40d9-908d-4846044ee0f0'; //authToken
-		
+
 		// Example POST method implementation:
 		async function postData(url = '', data = {}) {
 		  // Default options are marked with *
@@ -97,7 +95,7 @@ $(document).ready(function () {
 			referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 			body: JSON.stringify(data) // body data type must match "Content-Type" header
 		  })
-		  .then(response => response.json()) 
+		  .then(response => response.json())
 		  .then (data => {
 			alert('Successful add of recipe!');
 			recipeID = data.recipeId;
@@ -110,9 +108,9 @@ $(document).ready(function () {
 
 		result = postData(postUrl, dataJSON)
 		  .then(data => {
-			uploadPicture(recipeID, cat); 
+			uploadPicture(recipeID, cat);
 		  });
-		
+
 		//get response from this post, save the recipeId returned, and then add to s3 with the name of that id
 		function uploadPicture(recipeId, category){
 			// Initialize the Amazon Cognito credentials provider
@@ -126,7 +124,7 @@ $(document).ready(function () {
  			 	apiVersion: '2006-03-01',
   				params: {Bucket: recipeBucketName}
 			});
-			
+
 			if (recipeID !==  '') {
 				var files = document.getElementById("file-input").files;
 				if (!files.length) {
@@ -135,9 +133,9 @@ $(document).ready(function () {
 				var file = files[0];
 				var fileName = file.name;
 				var categoryKey = encodeURIComponent(category) + "/";
-			  
+
 				var recipeKey = categoryKey + recipeId;
-			  
+
 				// Use S3 ManagedUpload class as it supports multipart uploads
 				var upload = new AWS.S3.ManagedUpload({
 				  params: {
@@ -147,7 +145,7 @@ $(document).ready(function () {
 					ACL:'public-read'
 				  }
 				});
-			  
+
 				var promise = upload.promise();
 				promise.then(
 				  function(data) {
@@ -164,9 +162,9 @@ $(document).ready(function () {
 
 			}
 		}
-				
+
 	});
-	
+
 	$('#file-input').change(function() {
 		//var i = $(this).prev('label').clone();
 		var imgDiv = document.getElementById("image-div");
@@ -174,16 +172,14 @@ $(document).ready(function () {
 		var p = document.createElement("p");
 		p.id = "filename";
 		var fileText = document.createTextNode(file);
-		
+
 		//check for existing file already uploaded
 		var existingFilename = document.getElementById("filename");
 		if (existingFilename !== null){
 			imgDiv.removeChild(existingFilename);
 		}
-		
+
 		//add filename to form
 		p.appendChild(fileText);
 		imgDiv.appendChild(p);
-	});
-	
-});
+	});*/
