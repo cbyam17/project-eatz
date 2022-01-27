@@ -8,87 +8,87 @@
   <script type="text/javascript" src="js/add-recipe-helper.js"></script>
 </head>
 <body>
-  <h1>Add Recipe</h1>
-	<br>
-  <p>Name</p>
-  <input type="text" name="recipeName" id="recipeNameId" placeholder="my new recipe"/>
-  <br>
-  <p>Category</p>
-  <select name="category" id="categoryId">
-    <option selected></option>
-    <option value="app">App</option>
-    <option value="main">Main</option>
-    <option value="side">Side</option>
-    <option value="dessert">Dessert</option>
-    <option value="drink">Drink</option>
-    <option value="other">Other</option>
-  </select>
-  <br>
-  <p>Description</p>
-  <textarea name="description" id="descriptionId" placeholder="this recipe is great for lunch or dinner"></textarea>
-	<br>
-  <p>Ingredients</p>
-  <table name="ingredientsTable" id="ingredientsTableId">
-    <thead>
-      <tr>
-        <td>Amount</td>
-        <td>Ingredient</td>
-        <td>Notes</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <input type="number" name="ingredients[][amount]" id="amountId" placeholder="2"/>
-        </td>
-        <td>
-          <input type="text" name="ingredients[][ingredient]" id="ingredientId" placeholder="tsp dried oregano"/>
-        </td>
-        <td>
-          <textarea name="ingredients[][notes]" id="notesId" placeholder="double if using fresh oregano"></textarea>
-        </td>
-        <td>
-          <p>Delete (placeholder)</p>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td>
-          <p>Add (placeholder)</p>
-        </td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>
-  <br>
-  <p>Steps</p>
-  <table name="directionsTable" id= "directionsTableId">
-    <tbody>
-      <tr>
-        <td>
-           <textarea name="directions[]" id="directionId" placeholder="sautee chopped onions in oil over medium heat until translucent"></textarea>
-        </td>
-        <td>
-          <p>Delete (placeholder)</p>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td>
-          <p>Add (placeholder)
-        </td>
-      </tr>
-    </tfoot>
-  </table>
-  <br>
-  <p>Image upload<p>
-  <input type="file" name="image" id="imageId"/>
-	<br>
-  <a href="index.html">Add recipe (placeholder)</a>
-  <br>
-  <a href="index.html">Home</a>
+  <form class="form" name="addRecipeForm" id="addRecipeForm" accept-charset="utf-8" autocomplete="on">
+    <h1>Add Recipe</h1>
+    <p>Name</p>
+    <input type="text" name="name" id="name" placeholder="my new recipe"/>
+    <p>Category</p>
+    <select name="category" id="categoryId">
+      <option selected></option>
+      <option value="app">App</option>
+      <option value="main">Main</option>
+      <option value="side">Side</option>
+      <option value="dessert">Dessert</option>
+      <option value="drink">Drink</option>
+      <option value="other">Other</option>
+    </select>
+    <p>Description</p>
+    <textarea name="description" id="description" placeholder="this recipe is great for lunch or dinner"></textarea>
+    <p>Ingredients</p>
+    <table name="ingredientsTable" id="ingredientsTable">
+      <!-- ingredients table header -->
+      <thead>
+        <tr>
+          <td>Quantity</td>
+          <td>Ingredient</td>
+          <td>Notes</td>
+        </tr>
+      </thead>
+      <!-- ingredients table body -->
+      <tbody>
+        <tr>
+          <td>
+            <input type="number" name="ingredients[][quantity]" id="quantity" placeholder="2"/>
+          </td>
+          <td>
+            <input type="text" name="ingredients[][ingredient]" id="ingredient" placeholder="tsp dried oregano"/>
+          </td>
+          <td>
+            <textarea name="ingredients[][notes]" id="notes" placeholder="double if using fresh oregano"></textarea>
+          </td>
+          <td>
+            <input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="Delete"/>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <input type="button" id="addIngredientButton" value="Add"/>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <p>Steps</p>
+    <table name="stepsTable" id= "stepsTable">
+      <tbody>
+        <tr>
+          <td>
+             <textarea name="steps[]" id="step" placeholder="sautee chopped onions in oil over medium heat until translucent"></textarea>
+          </td>
+          <td>
+            <input type="button" id="deleteStepButton" class="deleteButtonClass" value="Delete"/>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <input type="button" id="addStepButton" value="Add"/>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <p>Image upload<p>
+    <input type="file" name="image" id="image"/>
+    <br>
+    <br>
+    <a href="index.html">
+      <input type="button" id="cancelButton" value="Cancel"/>
+    </a>
+    <input type="button" id="addRecipeButton" value="Add Recipe"/>
+  </form>
 </body>
 </html>
