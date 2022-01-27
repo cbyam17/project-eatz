@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html  >
 <head>
-  <title>Browse Recipes</title>  
-   <link rel="stylesheet" href="css/styles.css">
-   <link rel="stylesheet" href="css/buttons.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <script type="text/javascript" src="js/jquery.min.js"></script> 
+  <title>ProjectEatz - Browse Cookbook</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
-  <script type="text/javascript" src="js/browse-recipe-helper.js"></script> 
+  <script type="text/javascript" src="js/browse-cookbook-helper.js"></script>
 </head>
 
 <body id=recipeBody>
-	<section>
-		<ul id="navBar" class="nav-bar-ul">
-		  <li class="nav-bar-li"><a href="index.html">Home</a></li>
-		  <li class="nav-bar-li"><a href="about-us.html">About Us</a></li>
-		  <li class="nav-bar-li"><a href="login.html">Login</a></li>
-		  <li class="nav-bar-li" style="float:right"><a onClick="showSearchBox()"><i class="fa fa-search w3-xlarge"></i></a></li>
-		</ul>
-	</section>
-	
+
 	<section>
 		<div class="flex-container-wrap">
 			<div>
 				<h1><strong>Browse Recipes</strong></h3>
 			</div>
 		</div>
-		
+
 		<div class="flex-container-nowrap">
 			<div class="card">
 				<a href="javascript:getRecipeList('App')">
@@ -55,9 +44,9 @@
 						<p>The side show</p>
 					</div>
 				</a>
-			</div>		
+			</div>
 		</div>
-		
+
 		<div class="flex-container-nowrap">
 			<div class="card">
 				<a href="javascript:getRecipeList('Dessert')">
@@ -85,25 +74,25 @@
 						<p>Everything else</p>
 					</div>
 				</a>
-			</div>		
+			</div>
 		</div>
-		
+
 		<div class="flex-container-nowrap">
 			<div id=searchContent>
-				<div id=searchTotal class=searchTotal >	
+				<div id=searchTotal class=searchTotal >
 				</div>
 				<div id=recipeTable class="search-results-content-results-wrapper grid-view ">
 				</div>
-			</div>     
+			</div>
 		</div>
 		<div class="flex-container-nowrap">
 			<a href="index.html">
 				<input type="button" class="back-button" id="goBack" value="Home"/>
 			</a>
 		</div>
-		
-	</section> 
 
- 
+	</section>
+
+
 </body>
 </html>

@@ -1,9 +1,9 @@
 /*
-   Javascript helper file for add-recipe.htmls
-	 Contributors:
-	 	- Matt: JQuery to dynamically add and remove table rows
-		- Mike: persisting and fetching images in AWS S3
-		- Chris: serializing form data and submitting RESTful POST request to create recipe
+   javascript helper file for add-recipe.htmls
+	 contributors:
+	 	- matt: JQuery to dynamically add and remove table rows
+		- mike: persisting and fetching images in AWS S3
+		- chris: serializing form data and submitting RESTful POST request to create recipe
 */
 
 $(document).ready(function () {
@@ -11,7 +11,7 @@ $(document).ready(function () {
 	//function to collect form data and send request to create new recipe
 	$('#addRecipeButton').on('click', function(){
 		//capture form data as JSON object
-		var dataJSON = $('#addRecipeFormId').serializeJSON();
+		var dataJSON = $('#addRecipeForm').serializeJSON();
 		console.log(dataJSON);
 
 		//TO DO: implement POST REST web request (see below snippet)
