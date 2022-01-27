@@ -15,10 +15,12 @@ $(document).ready(function () {
 	//list all recipes in <ul> getElementById
 	for(i=0; i<dataJSON.length; i++){
 		var newItem = $('<li>');
-		var recipe = '<a href="update-recipe.html?recipeId='+dataJSON[i].id+'">'+dataJSON[i].name+'</a>'
+		var recipe = '<a href="view-recipe.html?recipeId='+dataJSON[i].id+'">'+dataJSON[i].name+'</a>'
 		newItem.append(recipe);
 		$('#recipeList').append(newItem);
 	}
+
+	//TO DO: add thumbnail images to each recipe (put in table/grid view)
 
 });
 
