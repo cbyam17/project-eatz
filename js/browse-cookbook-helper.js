@@ -1,5 +1,30 @@
-		
-		function getRecipeList(catRecipe) {
+/*
+   javascript helper file for browse-cookbook.html
+	 Contributors:
+		- mike: fetching images from AWS S3 and rendering page
+*/
+
+//DEBUGGING ONLY: create test JSON for debugging
+var dataStr = "[{\"id\": \"123ABC\",\n    \"name\": \"test recipe 1\",\n    \"category\": \"main\",\n    \"description\": \"test recipe 1 description\",\n    \"ingredients\": [\n        {\n            \"quantity\": \"1\",\n            \"ingredient\": \"yellow onion\",\n            \"notes\": \"finely chopped\"\n        },\n        {\n            \"quantity\": \"2\",\n            \"ingredient\": \"sprigs rosemary\",\n            \"notes\": \"dried can be substituted, just use half\"\n        }\n    ],\n    \"steps\": [\n        \"sautee onion in oil over medium heat\",\n        \"add rosemary springs and stir until aromatic\"\n    ]\n},\n{\"id\": \"456ABC\",\n    \"name\": \"test recipe 2\",\n    \"category\": \"app\",\n    \"description\": \"test recipe 2 description\",\n    \"ingredients\": [\n        {\n            \"quantity\": \"2\",\n            \"ingredient\": \"roma tomatoes (diced)\",\n            \"notes\": \"canned tomatoes work too\"\n        },\n        {\n            \"quantity\": \"1\",\n            \"ingredient\": \"tsp garlic powder\",\n            \"notes\": \"\"\n        }\n    ],\n    \"steps\": [\n        \"throw tomatoes in a blender with garlic until smooth\",\n        \"pour mixture in a pan on medium heat for 20 minutes\"\n    ]\n}]"
+var dataJSON = JSON.parse(dataStr);
+
+//TO DO: fetch all recipes from api
+
+$(document).ready(function () {
+
+	//list all recipes in <ul> getElementById
+	for(i=0; i<dataJSON.length; i++){
+		var newItem = $('<li>');
+		var recipe = '<a href="view-recipe.html?recipeId='+dataJSON[i].id+'">'+dataJSON[i].name+'</a>'
+		newItem.append(recipe);
+		$('#recipeList').append(newItem);
+	}
+
+	//TO DO: add thumbnail images to each recipe (put in table/grid view)
+
+});
+
+/*		function getRecipeList(catRecipe) {
 
 		var authToken = '0eb6b64d-4aee-40d9-908d-4846044ee0f0';
 		var req = 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe?category=' + catRecipe;
@@ -142,4 +167,4 @@
 			});
 
 		}
-	}
+	}*/

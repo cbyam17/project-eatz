@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  >
+<html >
 <head>
   <title>ProjectEatz - Browse Cookbook</title>
   <link rel="stylesheet" href="css/styles.css">
@@ -7,92 +7,12 @@
   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
   <script type="text/javascript" src="js/browse-cookbook-helper.js"></script>
 </head>
-
-<body id=recipeBody>
-
-	<section>
-		<div class="flex-container-wrap">
-			<div>
-				<h1><strong>Browse Recipes</strong></h3>
-			</div>
-		</div>
-
-		<div class="flex-container-nowrap">
-			<div class="card">
-				<a href="javascript:getRecipeList('App')">
-					<div class="container" id="apps">
-					<br>
-						<h3><strong>Apps</strong></h3>
-						<p>The opening act</p>
-					</div>
-				</a>
-			</div>
-			<div class="card">
-				<a href="javascript:getRecipeList('Main')">
-					<div class="container" id="mains">
-					<br>
-						<h3><strong>Mains</strong></h3>
-						<p>The main event</p>
-					</div>
-				</a>
-			</div>
-			<div class="card">
-				<a href="javascript:getRecipeList('Side')">
-					<div class="container" id="randomRecipe">
-					<br>
-						<h3><strong>Sides</strong></h3>
-						<p>The side show</p>
-					</div>
-				</a>
-			</div>
-		</div>
-
-		<div class="flex-container-nowrap">
-			<div class="card">
-				<a href="javascript:getRecipeList('Dessert')">
-					<div class="container" id="desserts">
-					<br>
-						<h3><strong>Desserts</strong></h3>
-						<p>The sweet stuff</p>
-					</div>
-				</a>
-			</div>
-			<div class="card">
-				<a href="javascript:getRecipeList('Drink')">
-					<div class="container" id="drinks">
-					<br>
-						<h3><strong>Drinks</strong></h3>
-						<p>The refreshments</p>
-					</div>
-				</a>
-			</div>
-			<div class="card">
-				<a href="javascript:getRecipeList('Other')">
-					<div class="container" id="other">
-					<br>
-						<h3><strong>Others</strong></h3>
-						<p>Everything else</p>
-					</div>
-				</a>
-			</div>
-		</div>
-
-		<div class="flex-container-nowrap">
-			<div id=searchContent>
-				<div id=searchTotal class=searchTotal >
-				</div>
-				<div id=recipeTable class="search-results-content-results-wrapper grid-view ">
-				</div>
-			</div>
-		</div>
-		<div class="flex-container-nowrap">
-			<a href="index.html">
-				<input type="button" class="back-button" id="goBack" value="Home"/>
-			</a>
-		</div>
-
-	</section>
-
-
+<body>
+  <h1>Browse Cookbook</h1>
+  <ul id="recipeList">
+  </ul>
+  <a href="index.html">
+    <input type="button" class="back-button" id="goBack" value="Home"/>
+  </a>
 </body>
 </html>
