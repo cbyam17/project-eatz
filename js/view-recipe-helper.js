@@ -23,51 +23,70 @@ var ProjectEatz = window.ProjectEatz || {};
 			window.location.href = 'signin.html';
 	});
 
-	//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
-	var queryString = window.location.href.split('/').pop();
-	var recipeId = queryString.split('=').pop();
-
-	//TO DO: fetch recipe details from api (see snippet below)
-
-	//DEBUGGING ONLY: create test JSON for debugging
+	/*DEBUGGING ONLY: create test JSON for debugging
 	var dataStr = '{\n\t\"id\": \"123ABC\",\n\t\"name\": \"Test recipe 1\",\n\t\"category\": \"Main\",\n\t\"description\": \"Makes about 4-6 servings\",\n\t\"ingredients\": [{\n\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\"notes\": \"Finely chopped\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t}\n\n\t],\n\t\"steps\": [\n\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t]\n}'
-	var dataJSON = JSON.parse(dataStr);
+	var dataJSON = JSON.parse(dataStr);*/
 
 	//wrapper function for what to set up event listeners on page load
   $(function onDocReady(){
-		populateRecipeDetails(dataJSON);
+		populateRecipeDetails();
     $('#editRecipeButton').on('click', handleEditRecipe);
   });
 
 	function populateRecipeDetails(dataJSON){
-		//populate recipe name, category, description
-		$('#name').text(dataJSON.name);
-		$('#category').text(dataJSON.category);
-		$('#description').text(dataJSON.description);
 
-		//populate recipe ingredients table
-		for (i=0; i<dataJSON.ingredients.length; i++){
-			var newRow = $('<tr>');
-			var cols = '';
-			//note: keep these in sync with ingredients table in add-recipe.html and update-recipe.html
-			cols += '<td>'+dataJSON.ingredients[i].ingredient+'</td>';
-			cols += '<td>'+dataJSON.ingredients[i].notes+'</td>';
-			newRow.append(cols);
-			$('#ingredientsTable tbody').append(newRow);
-		}
+		//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
+		var queryString = window.location.href.split('/').pop();
+		var recipeId = queryString.split('=').pop();
 
-		//populate recipe steps stepsTable
-		for (i=0; i<dataJSON.steps.length; i++){
-			var newRow = $('<tr>');
-			var cols = '';
-			//note: keep these in sync with steps table in add-recipe.html and update-recipe.html
-			cols += '<td>'+(i+1)+'</td>';
-			cols += '<td>'+dataJSON.steps[i]+'</td>';
-			newRow.append(cols);
-			$('#stepsTable tbody').append(newRow);
-		}
+		//call projecteatz api to fetch recipe details
+		$.ajax({
+						method: 'GET',
+						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe/' + recipeId,
+						headers: {
+							'Authorization': authToken
+						},
+						contentType: 'application/json',
+						success: completeRequest,
+						error: function ajaxError(jqXHR, textStatus, errorThrown) {
+								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
+								console.error('Response: ', jqXHR.responseText);
+								alert('An error occured when adding your recipe:\n' + jqXHR.responseText);
+						}
+		});
+	}
 
-		//TO DO: render the image from AWS S3 on page
+		function completeRequest(result) {
+			console.log(result);
+			//populate recipe name, category, description, createdby
+			$('#name').text(result.name);
+			$('#category').text(result.category);
+			$('#description').text(result.description);
+			$('#createdBy').text(result.createdBy);
+
+			//populate recipe ingredients table
+			for (i=0; i<result.ingredients.length; i++){
+				var newRow = $('<tr>');
+				var cols = '';
+				//note: keep these in sync with ingredients table in add-recipe.html and update-recipe.html
+				cols += '<td>'+result.ingredients[i].ingredient+'</td>';
+				cols += '<td>'+result.ingredients[i].notes+'</td>';
+				newRow.append(cols);
+				$('#ingredientsTable tbody').append(newRow);
+			}
+
+			//populate recipe steps stepsTable
+			for (i=0; i<result.steps.length; i++){
+				var newRow = $('<tr>');
+				var cols = '';
+				//note: keep these in sync with steps table in add-recipe.html and update-recipe.html
+				cols += '<td>'+(i+1)+'.</td>';
+				cols += '<td>'+result.steps[i]+'</td>';
+				newRow.append(cols);
+				$('#stepsTable tbody').append(newRow);
+			}
+
+			//TO DO: render the image from AWS S3 on page
 
 	}
 
