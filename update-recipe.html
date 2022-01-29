@@ -2,46 +2,43 @@
 <html>
 <head>
   <title>ProjectEatz - Update Recipe</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/jquery.serializejson.js"></script>
-  <script type="text/javascript" src="js/add-recipe-helper.js"></script>
-  <script type="text/javascript" src="js/update-recipe-helper.js"></script>
+  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <script src="js/vendor/jquery.min.js"></script>
+  <script src="js/vendor/jquery.serializejson.min.js"></script>
+  <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+  <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/cognito-auth.js"></script>
+  <script src="js/update-recipe-helper.js"></script>
 </head>
 <body>
-  <form class="form" name="updateRecipeForm" id="updateRecipeForm" accept-charset="utf-8" autocomplete="on">
-    <h1>Update Recipe</h1>
-    <p>Name</p>
-    <input type="text" name="name" id="name" placeholder="my new recipe"/>
-    <p>Category</p>
+  <a href="main-menu.html">
+    <input type="button" class="back-button" id="goBack" value="Main Menu"/>
+  </a>
+  <h1>Update Recipe</h1>
+  <p>To save your changes, click "Update Recipe" button at the bottom of the page.</p>
+  <form class="form" name="updateRecipeForm" id="updateRecipeForm" accept-charset="utf-8">
+    <input type="text" name="name" id="name"/>
+    <br><br>
     <select name="category" id="category">
-      <option selected></option>
-      <option value="app">App</option>
-      <option value="main">Main</option>
-      <option value="side">Side</option>
-      <option value="dessert">Dessert</option>
-      <option value="drink">Drink</option>
-      <option value="other">Other</option>
+      <option selected>--select category--</option>
+      <option value="Appetizer">Appetizer</option>
+      <option value="Main">Main</option>
+      <option value="Side">Side</option>
+      <option value="Dessert">Dessert</option>
+      <option value="Drink">Drink</option>
+      <option value="Other">Other</option>
     </select>
-    <p>Description</p>
-    <textarea name="description" id="description" placeholder="this recipe is great for lunch or dinner"></textarea>
+    <br><br>
+    <textarea name="description" id="description"></textarea>
     <p>Ingredients</p>
     <table name="ingredientsTable" id="ingredientsTable">
-      <!-- ingredients table header -->
-      <thead>
-        <tr>
-          <td>Quantity</td>
-          <td>Ingredient</td>
-          <td>Notes</td>
-        </tr>
-      </thead>
       <!-- ingredients table body to be generated dynamically -->
       <tbody></tbody>
       <tfoot>
         <tr>
           <td>
-            <input type="button" id="addIngredientButton" value="Add"/>
+            <input type="button" id="addIngredientButton" value="+"/>
           </td>
           <td></td>
           <td></td>
@@ -55,20 +52,17 @@
       <tfoot>
         <tr>
           <td>
-            <input type="button" id="addStepButton" value="Add"/>
+            <input type="button" id="addStepButton" value="+"/>
           </td>
         </tr>
       </tfoot>
     </table>
-    <p>Image upload<p>
+    <p>Picture (placeholder)<p>
     <input type="file" name="image" id="image"/>
     <br>
     <br>
-    <input type="button" id="cancelUpdateButton" value="Cancel"/>
-    <input type="button" id="updateRecipeButton" value="Submit"/>
-    <a href="index.html">
-      <input type="button" class="back-button" id="goBack" value="Home"/>
-    </a>
+    <input type="button" id="cancelUpdateRecipeButton" value="Cancel"/>
+    <input type="submit" value="Update Recipe">
   </form>
 </body>
 </html>

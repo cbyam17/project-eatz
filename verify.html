@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project Eatz - Verify</title>
+  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <script src="js/vendor/jquery.min.js"></script>
+	<script src="js/vendor/aws-cognito-sdk.min.js"></script>
+	<script src="js/vendor/amazon-cognito-identity.min.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/cognito-auth.js"></script>
+</head>
+<body>
+  <h1>Verify Email</h1>
+    <form id="verifyForm">
+      <input type="email" id="emailInputVerify" placeholder="Email" required>
+      <br><br>
+      <input type="text" id="codeInputVerify" placeholder="Verification Code" pattern=".*" required>
+      <br><br>
+      <input type="submit" value="Verify">
+      <a href="index.html">
+        <input type="button" class="back-button" id="goBack" value="Home"/>
+      </a>
+    </form>
+</body>
+</html>

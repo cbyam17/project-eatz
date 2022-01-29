@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project Eatz - Sign In</title>
+	<!-- <link rel="stylesheet" href="css/styles.css"> -->
+	<script src="js/vendor/jquery.min.js"></script>
+	<script src="js/vendor/aws-cognito-sdk.min.js"></script>
+	<script src="js/vendor/amazon-cognito-identity.min.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/cognito-auth.js"></script>
+</head>
+<body>
+  <h1>Sign In</h1>
+    <form id="signinForm">
+      <input type="email" id="emailInputSignin" placeholder="Email" required>
+      <br><br>
+      <input type="password" id="passwordInputSignin" placeholder="Password" pattern=".*" required>
+      <br><br>
+      <input type="submit" value="Sign in">
+      <a href="index.html">
+        <input type="button" class="back-button" id="goBack" value="Home"/>
+      </a>
+    </form>
+</body>
+</html>

@@ -2,17 +2,22 @@
 <html >
 <head>
   <title>ProjectEatz - Browse Cookbook</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
-  <script type="text/javascript" src="js/browse-cookbook-helper.js"></script>
+  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <script src="js/vendor/jquery.min.js"></script>
+  <script src="js/vendor/jquery.serializejson.min.js"></script>
+  <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+  <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/cognito-auth.js"></script>
+  <script src="js/browse-cookbook-helper.js"></script>
 </head>
 <body>
   <h1>Browse Cookbook</h1>
+  <p>Let's find something to eat</p>
   <ul id="recipeList">
   </ul>
-  <a href="index.html">
-    <input type="button" class="back-button" id="goBack" value="Home"/>
+  <a href="main-menu.html">
+    <input type="button" class="back-button" id="goBack" value="Main Menu"/>
   </a>
 </body>
 </html>
