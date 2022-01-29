@@ -4,25 +4,49 @@
 		- mike: fetching images from AWS S3 and rendering page
 */
 
-//DEBUGGING ONLY: create test JSON for debugging
-var dataStr = "[{\"id\": \"123ABC\",\n    \"name\": \"test recipe 1\",\n    \"category\": \"main\",\n    \"description\": \"test recipe 1 description\",\n    \"ingredients\": [\n        {\n            \"quantity\": \"1\",\n            \"ingredient\": \"yellow onion\",\n            \"notes\": \"finely chopped\"\n        },\n        {\n            \"quantity\": \"2\",\n            \"ingredient\": \"sprigs rosemary\",\n            \"notes\": \"dried can be substituted, just use half\"\n        }\n    ],\n    \"steps\": [\n        \"sautee onion in oil over medium heat\",\n        \"add rosemary springs and stir until aromatic\"\n    ]\n},\n{\"id\": \"456ABC\",\n    \"name\": \"test recipe 2\",\n    \"category\": \"app\",\n    \"description\": \"test recipe 2 description\",\n    \"ingredients\": [\n        {\n            \"quantity\": \"2\",\n            \"ingredient\": \"roma tomatoes (diced)\",\n            \"notes\": \"canned tomatoes work too\"\n        },\n        {\n            \"quantity\": \"1\",\n            \"ingredient\": \"tsp garlic powder\",\n            \"notes\": \"\"\n        }\n    ],\n    \"steps\": [\n        \"throw tomatoes in a blender with garlic until smooth\",\n        \"pour mixture in a pan on medium heat for 20 minutes\"\n    ]\n}]"
-var dataJSON = JSON.parse(dataStr);
+var ProjectEatz = window.ProjectEatz || {};
 
-//TO DO: fetch all recipes from api
+(function scopeWrapper($) {
 
-$(document).ready(function () {
+  //redirect user to signin page if not logged in
+  var authToken;
+  ProjectEatz.authToken.then(function setAuthToken(token) {
+      if (token) {
+          authToken = token;
+      } else {
+        alert('Please sign in to access this page');
+        window.location.href = 'signin.html';
+      }
+  }).catch(function handleTokenError(error) {
+      alert(error);
+      window.location.href = 'signin.html';
+  });
 
-	//list all recipes in <ul> getElementById
-	for(i=0; i<dataJSON.length; i++){
-		var newItem = $('<li>');
-		var recipe = '<a href="view-recipe.html?recipeId='+dataJSON[i].id+'">'+dataJSON[i].name+'</a>'
-		newItem.append(recipe);
-		$('#recipeList').append(newItem);
+	//DEBUGGING ONLY: create test JSON for debugging
+	var dataStr = '[{\n\t\t\"id\": \"123ABC\",\n\t\t\"name\": \"Test recipe 1\",\n\t\t\"category\": \"Main\",\n\t\t\"description\": \"Makes about 4-6 servings\",\n\t\t\"ingredients\": [{\n\t\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\t\"notes\": \"Finely chopped\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t\t}\n\n\t\t],\n\t\t\"steps\": [\n\t\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t\t]\n\t},\n\t{\n\t\t\"id\": \"456ABC\",\n\t\t\"name\": \"Test recipe 2\",\n\t\t\"category\": \"Appetizer\",\n\t\t\"description\": \"To make this a meal, just double the recipe\",\n\t\t\"ingredients\": [{\n\t\t\t\t\"ingredient\": \"1 roma tomato\",\n\t\t\t\t\"notes\": \"Diced, but canned also works too\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ingredient\": \"1 Tbsp olive oil\",\n\t\t\t\t\"notes\": \"Any neutral oil can be used\"\n\t\t\t}\n\t\t],\n\t\t\"steps\": [\n\t\t\t\"Add diced tomatoes to a large pan over medium heat\",\n\t\t\t\"Stir in the oil and sautee for a few minutes\"\n\t\t]\n\t}\n]';
+	var dataJSON = JSON.parse(dataStr);
+	console.log(dataJSON);
+
+	//TO DO: fetch all recipes from api
+
+	$(function onDocReady(){
+		listAllRecipes(dataJSON);
+	});
+
+	function listAllRecipes(dataJSON){
+		//list all recipes in <ul> getElementById
+		for(i=0; i<dataJSON.length; i++){
+			var newItem = $('<li>');
+			var recipe = '<a href="view-recipe.html?recipeId='+dataJSON[i].id+'">'+dataJSON[i].name+'</a>'
+			newItem.append(recipe);
+			$('#recipeList').append(newItem);
+		}
+
+		//TO DO: add thumbnail images to each recipe (put in table/grid view)
+
 	}
 
-	//TO DO: add thumbnail images to each recipe (put in table/grid view)
-
-});
+}(jQuery));
 
 /*		function getRecipeList(catRecipe) {
 

@@ -5,57 +5,79 @@
 		- chris: fetching recipe details from API and rendering on page
 */
 
-//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
-//url will look something like this: .../update-recipe.html?recipeId=ZsZFXcMmtvXFQ-8xoiWR6w
-var queryString = window.location.href.split('/').pop();
-var recipeId = queryString.split('=').pop();
-console.log(recipeId);
+var ProjectEatz = window.ProjectEatz || {};
 
-//TO DO: fetch recipe details from api (see snippet below)
+(function scopeWrapper($) {
 
-//DEBUGGING ONLY: create test JSON for debugging
-var dataStr = '{\n    \"name\": \"test recipe\",\n    \"category\": \"main\",\n    \"description\": \"test recipe description\",\n    \"ingredients\": [\n        {\n            \"quantity\": \"1\",\n            \"ingredient\": \"yellow onion\",\n            \"notes\": \"finely chopped\"\n        },\n        {\n            \"quantity\": \"2\",\n            \"ingredient\": \"sprigs rosemary\",\n            \"notes\": \"dried can be substituted, just use half\"\n        }\n    ],\n    \"steps\": [\n        \"sautee onion in oil over medium heat\",\n        \"add rosemary springs and stir until aromatic\"\n    ]\n}';
-var dataJSON = JSON.parse(dataStr);
-console.log(dataJSON);
-
-$(document).ready(function () {
-
-	//populate recipe name, category, description
-	$('#name').text(dataJSON.name);
-	$('#category').text(dataJSON.category);
-	$('#description').text(dataJSON.description);
-
-	//populate recipe ingredients table
-	for (i=0; i<dataJSON.ingredients.length; i++){
-		var newRow = $('<tr>');
-		var cols = '';
-		//note: keep these in sync with ingredients table in add-recipe.html and update-recipe.html
-		cols += '<td>'+dataJSON.ingredients[i].quantity+'</td>';
-		cols += '<td>'+dataJSON.ingredients[i].ingredient+'</td>';
-		cols += '<td>'+dataJSON.ingredients[i].notes+'</td>';
-		newRow.append(cols);
-		$('#ingredientsTable tbody').append(newRow);
-	}
-
-	//populate recipe steps stepsTable
-	for (i=0; i<dataJSON.steps.length; i++){
-		var newRow = $('<tr>');
-		var cols = '';
-		//note: keep these in sync with steps table in add-recipe.html and update-recipe.html
-		cols += '<td>'+(i+1)+'</td>';
-		cols += '<td>'+dataJSON.steps[i]+'</td>';
-		newRow.append(cols);
-		$('#stepsTable tbody').append(newRow);
-	}
-
-	//function to go to update recipe page when edit recipe button is clicked
-	$("#editRecipeButton").on('click', function() {
-		var queryString = window.location.href.split('/').pop();
-		var recipeId = queryString.split('=').pop();
-		var url = "update-recipe.html?recipeId=" + recipeId;
-		window.location.href = url;
+	//redirect user to signin page if not logged in
+	var authToken;
+	ProjectEatz.authToken.then(function setAuthToken(token) {
+			if (token) {
+					authToken = token;
+			} else {
+				alert('Please sign in to access this page');
+				window.location.href = 'signin.html';
+			}
+	}).catch(function handleTokenError(error) {
+			alert(error);
+			window.location.href = 'signin.html';
 	});
-});
+
+	//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
+	var queryString = window.location.href.split('/').pop();
+	var recipeId = queryString.split('=').pop();
+
+	//TO DO: fetch recipe details from api (see snippet below)
+
+	//DEBUGGING ONLY: create test JSON for debugging
+	var dataStr = '{\n\t\"id\": \"123ABC\",\n\t\"name\": \"Test recipe 1\",\n\t\"category\": \"Main\",\n\t\"description\": \"Makes about 4-6 servings\",\n\t\"ingredients\": [{\n\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\"notes\": \"Finely chopped\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t}\n\n\t],\n\t\"steps\": [\n\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t]\n}'
+	var dataJSON = JSON.parse(dataStr);
+
+	//wrapper function for what to set up event listeners on page load
+  $(function onDocReady(){
+		populateRecipeDetails(dataJSON);
+    $('#editRecipeButton').on('click', handleEditRecipe);
+  });
+
+	function populateRecipeDetails(dataJSON){
+		//populate recipe name, category, description
+		$('#name').text(dataJSON.name);
+		$('#category').text(dataJSON.category);
+		$('#description').text(dataJSON.description);
+
+		//populate recipe ingredients table
+		for (i=0; i<dataJSON.ingredients.length; i++){
+			var newRow = $('<tr>');
+			var cols = '';
+			//note: keep these in sync with ingredients table in add-recipe.html and update-recipe.html
+			cols += '<td>'+dataJSON.ingredients[i].ingredient+'</td>';
+			cols += '<td>'+dataJSON.ingredients[i].notes+'</td>';
+			newRow.append(cols);
+			$('#ingredientsTable tbody').append(newRow);
+		}
+
+		//populate recipe steps stepsTable
+		for (i=0; i<dataJSON.steps.length; i++){
+			var newRow = $('<tr>');
+			var cols = '';
+			//note: keep these in sync with steps table in add-recipe.html and update-recipe.html
+			cols += '<td>'+(i+1)+'</td>';
+			cols += '<td>'+dataJSON.steps[i]+'</td>';
+			newRow.append(cols);
+			$('#stepsTable tbody').append(newRow);
+		}
+
+		//TO DO: render the image from AWS S3 on page
+
+	}
+
+	function handleEditRecipe(event){
+		var url = "update-recipe.html?recipeId=" + recipeId;
+		console.log(url);
+		window.location.href = url;
+	}
+
+}(jQuery));
 
 /*
 
