@@ -24,6 +24,17 @@ var ProjectEatz = window.ProjectEatz || {};
       window.location.href = 'signin.html';
   });
 
+  //get current user
+  var poolData = {
+      UserPoolId: _config.cognito.userPoolId,
+      ClientId: _config.cognito.userPoolClientId
+  };
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+  if (typeof AWSCognito !== 'undefined') {
+      AWSCognito.config.region = _config.cognito.region;
+  }
+  var currentUser = userPool.getCurrentUser().username.replace('-at-', '@');
+
   //wrapper function for what to set up event listeners on page load
   $(function onDocReady(){
     $('#addIngredientButton').on('click', handleAddIngredientRow);
@@ -39,8 +50,8 @@ var ProjectEatz = window.ProjectEatz || {};
     var newRow = $('<tr>');
   	var cols = '';
   	//note: keep these in sync with ingredients table in add-recipe.html
-  	cols += '<td><input type="text" name="ingredients[ingredient] id="ingredient"/></td>';
-    cols += '<td><textarea name="ingredients[notes]" id="notes"></textarea></td>';
+  	cols += '<td><input type="text" name="ingredients[][ingredient]" id="ingredient"/></td>';
+    cols += '<td><textarea name="ingredients[][notes]" id="notes"></textarea></td>';
   	cols += '<td><input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="-"/></td>';
   	newRow.append(cols);
   	$('#ingredientsTable tbody').append(newRow);
@@ -80,20 +91,40 @@ var ProjectEatz = window.ProjectEatz || {};
   //function to collect form data and send request to create new recipe
   function handleAddRecipe(event){
     //capture form data as JSON object
-  	var dataJSON = $('#addRecipeForm').serializeJSON();
+  	var createRecipeDataJSON = $('#addRecipeForm').serializeJSON();
+    //add createdBy user to JSON objeect
+    createRecipeDataJSON.createdBy = currentUser;
     event.preventDefault();
-  	console.log(dataJSON);
 
-  	//TO DO: implement POST REST web request (see below snippet)
+  	//call projecteatz api to create new recipe
+    $.ajax({
+            method: 'POST',
+            url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe',
+            headers: {
+              'Authorization': authToken
+            },
+            data: JSON.stringify(createRecipeDataJSON),
+            contentType: 'application/json',
+            success: completeRequest,
+            error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
+                console.error('Response: ', jqXHR.responseText);
+                alert('An error occured when adding your recipe:\n' + jqXHR.responseText);
+            }
+    });
+  }
+
+  //function that runs upon successful create of new recipe
+  function completeRequest(result) {
 
     //TO DO: send image file to AWS S3 instance (see below snippet)
 
     //send user to view-recipe.html
-    //DEBUG ONLY: hardcode recipe that will be returned from api
-    var recipeId = '123ABC';
+    var recipeId = result.id;
     var url = "view-recipe.html?recipeId=" + recipeId;
     window.location.href = url;
-  }
+    }
+
 }(jQuery));
 
   	/* use this snippet to help with generating post request

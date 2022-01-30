@@ -19,12 +19,6 @@ var ProjectEatz = window.ProjectEatz || {};
       AWSCognito.config.region = _config.cognito.region;
   }
 
-  //TO DO: implement signout
-  //ProjectEatz.signOut = function signOut() {
-  //  console.log('signing out');
-  //  userPool.getCurrentUser().signOut();
-  //};
-
   ProjectEatz.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
     var cognitoUser = userPool.getCurrentUser();
 
@@ -42,10 +36,6 @@ var ProjectEatz = window.ProjectEatz || {};
       resolve(null);
     }
   });
-
-  //console.log(ProjectEatz.authToken);
-  //var user = userPool.getCurrentUser().username.replace('-at-', '@');
-  //console.log(user);
 
   $(function onDocReady() {
     $('#signinForm').submit(handleSignin);

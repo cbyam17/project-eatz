@@ -27,14 +27,13 @@ var ProjectEatz = window.ProjectEatz || {};
 	var queryString = window.location.href.split('/').pop();
 	var recipeId = queryString.split('=').pop();
 
-	//TO DO: Fetch recipe details from api (see snippet below)
 
-	//DEBUGGING ONLY: create test JSON for debugging
+	/*DEBUGGING ONLY: create test JSON for debugging
 	var dataStr = '{\n\t\"id\": \"123ABC\",\n\t\"name\": \"Test recipe 1\",\n\t\"category\": \"Main\",\n\t\"description\": \"Makes about 4-6 servings\",\n\t\"ingredients\": [{\n\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\"notes\": \"Finely chopped\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t}\n\n\t],\n\t\"steps\": [\n\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t]\n}'
-	var dataJSON = JSON.parse(dataStr);
+	var dataJSON = JSON.parse(dataStr);*/
 
 	$(function onDocReady(){
-		populateRecipeDetails(dataJSON);
+		populateRecipeDetails();
 		$('#addIngredientButton').on('click', handleAddIngredientRow);
 		$('#ingredientsTable').on('click','.deleteButtonClass', handleRemoveIngredientRow);
 		$('#addStepButton').on('click', handleAddStepRow);
@@ -43,36 +42,63 @@ var ProjectEatz = window.ProjectEatz || {};
 		$('#updateRecipeForm').submit(handleUpdateRecipe);
   });
 
-	function populateRecipeDetails(dataJSON){
+	function populateRecipeDetails(){
+		//call projecteatz api to fetch recipe details
+		$.ajax({
+						method: 'GET',
+						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe/' + recipeId,
+						headers: {
+							'Authorization': authToken
+						},
+						success: completeGetRecipeRequest,
+						error: function ajaxError(jqXHR, textStatus, errorThrown) {
+								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
+								console.error('Response: ', jqXHR.responseText);
+								alert('An error occured when adding your recipe:\n' + jqXHR.responseText);
+						}
+		});
+	}
+
+	function completeGetRecipeRequest(result){
+		//check result for server error
+		if (result.statusCode == 500){
+			alert('An error occured when adding your recipe:\n' + result.body);
+			return false;
+		}
+
 		//populate recipe name, category, description
-		$('#name').val(dataJSON.name);
-		$('#category').val(dataJSON.category);
-		$('#description').val(dataJSON.description);
+		$('#recipeName').val(result.recipeName);
+		$('#category').val(result.category);
+		$('#description').val(result.description);
 
 		//populate recipe ingredients table
-		for (i=0; i<dataJSON.ingredients.length; i++){
+		for (i=0; i<result.ingredients.length; i++){
 			var newRow = $('<tr>');
 			var cols = '';
 			//note: keep these in sync with ingredients table in add-recipe.html and update-recipe.html
-			cols += '<td><input type="text" name="ingredients[][ingredient]" id="ingredient" value="'+dataJSON.ingredients[i].ingredient+'"/></td>';
-			cols += '<td><textarea name="ingredients[][notes]" id="notes" value="">'+dataJSON.ingredients[i].notes+'</textarea></td>';
+			cols += '<td><input type="text" name="ingredients[][ingredient]" id="ingredient" value="'+result.ingredients[i].ingredient+'"/></td>';
+			cols += '<td><textarea name="ingredients[][notes]" id="notes" value="">'+result.ingredients[i].notes+'</textarea></td>';
 			cols += '<td><input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="-"/></td>';
 			newRow.append(cols);
 			$('#ingredientsTable tbody').append(newRow);
 		}
 
 		//populate recipe steps stepsTable
-		for (i=0; i<dataJSON.steps.length; i++){
+		for (i=0; i<result.steps.length; i++){
 			var newRow = $('<tr>');
 			var cols = '';
 			//note: keep these in sync with steps table in add-recipe.html and update-recipe.html
-			cols += '<td><textarea name="steps[]" id="step">'+dataJSON.steps[i]+'</textarea></td>';
+			cols += '<td><textarea name="steps[]" id="step">'+result.steps[i]+'</textarea></td>';
 			cols += '<td><input type="button" id="deleteStepButton" class="deleteButtonClass" value="-"/></td>';
 			newRow.append(cols);
 			$('#stepsTable tbody').append(newRow);
 		}
 
 		//TO DO: implement image preview and update
+
+    //hide buffering gif and make page visible
+    $('#buffering').css('display','none');
+    $('#container').css('display', 'block');
 
 	}
 
@@ -121,17 +147,39 @@ var ProjectEatz = window.ProjectEatz || {};
 
 	function handleUpdateRecipe(event){
 		//serialize form data as formatted JSON object (this doesn't capture the picture)
-		var newDataJSON = $('#updateRecipeForm').serializeJSON();
+		var updatedRecipeDataJSON = $('#updateRecipeForm').serializeJSON();
 		event.preventDefault();
-		console.log(newDataJSON);
 
-		//TO DO: implement PATCH request to API (see below snippet)
+		//call projecteatz api to fetch recipe details
+		$.ajax({
+						method: 'PATCH',
+						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe/' + recipeId,
+						headers: {
+							'Authorization': authToken
+						},
+						data: JSON.stringify(updatedRecipeDataJSON),
+						contentType: 'application/json',
+						success: completePatchRecipeRequest,
+						error: function ajaxError(jqXHR, textStatus, errorThrown) {
+								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
+								console.error('Response: ', jqXHR.responseText);
+								alert('An error occured when updating your recipe:\n' + jqXHR.responseText);
+						}
+		});
+
+		function completePatchRecipeRequest(result){
+			//check result for server error (REVISIT THIS)
+			if (result.statusCode == 500){
+				alert('An error occured updating recipe:\n' + result.body);
+				return false;
+			}
+			//send user to view-recipe.html
+			var url = "view-recipe.html?recipeId=" + recipeId;
+			window.location.href = url;
+		}
 
 		//TO DO: replace image file on AWS S3 instance
 
-		//send user to view-recipe.html
-		var url = "view-recipe.html?recipeId=" + recipeId;
-		window.location.href = url;
 	}
 
 }(jQuery));

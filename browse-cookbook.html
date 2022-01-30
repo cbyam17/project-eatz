@@ -12,12 +12,26 @@
   <script src="js/browse-cookbook-helper.js"></script>
 </head>
 <body>
-  <h1>Browse Cookbook</h1>
-  <p>Let's find something to eat</p>
-  <ul id="recipeList">
-  </ul>
-  <a href="main-menu.html">
-    <input type="button" class="back-button" id="goBack" value="Main Menu"/>
-  </a>
+  <div id="buffering">
+    <img src="img/buffering.gif" alt="Buffering...">
+  </div>
+  <div id="container" style="display: none;">
+    <a href="main-menu.html">
+      <input type="button" class="back-button" id="goBack" value="Main Menu"/>
+    </a>
+    <input type="button" id="signoutButton" value="Sign Out"/>
+    <h1>Browse Cookbook</h1>
+    <p>Let's find something to eat. Click on a recipe to view it.</p>
+    <!-- table for recipes -->
+    <table name="recipesTable" id="recipesTable">
+      <thead>
+        <td>Recipe</td>
+        <td>Category</td>
+        <td>CreatedBy</td>
+      </thead>
+      <!-- tbody to be populated dynamically -->
+      <tbody></tbody>
+    </table>
+  </div>
 </body>
 </html>

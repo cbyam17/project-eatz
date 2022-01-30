@@ -12,25 +12,33 @@
   <script src="js/view-recipe-helper.js"></script>
 </head>
 <body>
-  <a href="main-menu.html">
-    <input type="button" class="back-button" id="goBack" value="Main Menu"/>
-  </a>
-  <h1 id="name"></h1>
-  <h2>Category</h2>
-  <p id="category"></p>
-  <h2>Description</h2>
-  <p id="description"></p>
-  <h2>Ingredients</h2>
-  <table name="ingredientsTable" id="ingredientsTable">
-    <!-- ingredients table body to be generated dynamically -->
-    <tbody></tbody>
-  </table>
-  <h2>Steps</h2>
-  <table name="stepsTable" id= "stepsTable">
-    <!-- steps table body to be generated dynamically -->
-    <tbody></tbody>
-  </table>
-  <h2>Image (placeholder)</h2>
-  <input type="button" id="editRecipeButton" value="Edit Recipe"/>
+  <div id="buffering">
+    <img src="img/buffering.gif" alt="Buffering...">
+  </div>
+  <div id="container" style="display: none;">
+    <a href="main-menu.html">
+      <input type="button" class="back-button" id="goBack" value="Main Menu"/>
+    </a>
+    <input type="button" id="signoutButton" value="Sign Out"/>
+    <h1 id="recipeName"></h1>
+    <h2>Category</h2>
+    <p id="category"></p>
+    <h2>Description</h2>
+    <p id="description"></p>
+    <h2>Ingredients</h2>
+    <table name="ingredientsTable" id="ingredientsTable">
+      <!-- ingredients table body to be generated dynamically -->
+      <tbody></tbody>
+    </table>
+    <h2>Steps</h2>
+    <table name="stepsTable" id= "stepsTable">
+      <!-- steps table body to be generated dynamically -->
+      <tbody></tbody>
+    </table>
+    <h2>Image (placeholder)</h2>
+    <h3>Created By</h3>
+    <p id="createdBy"></p>
+    <input type="button" id="editRecipeButton" value="Edit Recipe"/>
+  </div>
 </body>
 </html>

@@ -5,8 +5,8 @@ window._config = {
         region: 'us-east-1'
     },
     api: {
-        invokeUrl: '', // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod'
-        clientId: ''
+        invokeUrl: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev',
+        token: '0eb6b64d-4aee-40d9-908d-4846044ee0f0'
     },
     s3: {
       apiVersion: '', // e.g. 2006-03-01
