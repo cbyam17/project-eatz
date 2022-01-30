@@ -10,17 +10,6 @@ var ProjectEatz = window.ProjectEatz || {};
 
 (function scopeWrapper($) {
 
-  //get current user
-  var poolData = {
-      UserPoolId: _config.cognito.userPoolId,
-      ClientId: _config.cognito.userPoolClientId
-  };
-  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-  if (typeof AWSCognito !== 'undefined') {
-      AWSCognito.config.region = _config.cognito.region;
-  }
-  var currentUser = userPool.getCurrentUser().username.replace('-at-', '@');
-
   //redirect user to signin page if not logged in
   var authToken;
   ProjectEatz.authToken.then(function setAuthToken(token) {
@@ -34,6 +23,17 @@ var ProjectEatz = window.ProjectEatz || {};
       alert(error);
       window.location.href = 'signin.html';
   });
+
+  //get current user
+  var poolData = {
+      UserPoolId: _config.cognito.userPoolId,
+      ClientId: _config.cognito.userPoolClientId
+  };
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+  if (typeof AWSCognito !== 'undefined') {
+      AWSCognito.config.region = _config.cognito.region;
+  }
+  var currentUser = userPool.getCurrentUser().username.replace('-at-', '@');
 
   //wrapper function for what to set up event listeners on page load
   $(function onDocReady(){
@@ -91,19 +91,19 @@ var ProjectEatz = window.ProjectEatz || {};
   //function to collect form data and send request to create new recipe
   function handleAddRecipe(event){
     //capture form data as JSON object
-  	var dataJSON = $('#addRecipeForm').serializeJSON();
+  	var createRecipeDataJSON = $('#addRecipeForm').serializeJSON();
     //add createdBy user to JSON objeect
-    dataJSON.createdBy = currentUser;
+    createRecipeDataJSON.createdBy = currentUser;
     event.preventDefault();
 
   	//call projecteatz api to create new recipe
     $.ajax({
             method: 'POST',
-            url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe',////_config.api.invokeUrl + '/recipe',
+            url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe',
             headers: {
               'Authorization': authToken
             },
-            data: JSON.stringify(dataJSON),
+            data: JSON.stringify(createRecipeDataJSON),
             contentType: 'application/json',
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
@@ -121,9 +121,8 @@ var ProjectEatz = window.ProjectEatz || {};
 
     //send user to view-recipe.html
     var recipeId = result.id;
-    console.log(recipeId);
-    //var url = "view-recipe.html?recipeId=" + recipeId;
-    //window.location.href = url;
+    var url = "view-recipe.html?recipeId=" + recipeId;
+    window.location.href = url;
     }
 
 }(jQuery));

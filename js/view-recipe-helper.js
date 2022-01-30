@@ -23,6 +23,10 @@ var ProjectEatz = window.ProjectEatz || {};
 			window.location.href = 'signin.html';
 	});
 
+	//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
+	var queryString = window.location.href.split('/').pop();
+	var recipeId = queryString.split('=').pop();
+
 	/*DEBUGGING ONLY: create test JSON for debugging
 	var dataStr = '{\n\t\"id\": \"123ABC\",\n\t\"name\": \"Test recipe 1\",\n\t\"category\": \"Main\",\n\t\"description\": \"Makes about 4-6 servings\",\n\t\"ingredients\": [{\n\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\"notes\": \"Finely chopped\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t}\n\n\t],\n\t\"steps\": [\n\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t]\n}'
 	var dataJSON = JSON.parse(dataStr);*/
@@ -33,12 +37,7 @@ var ProjectEatz = window.ProjectEatz || {};
     $('#editRecipeButton').on('click', handleEditRecipe);
   });
 
-	function populateRecipeDetails(dataJSON){
-
-		//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
-		var queryString = window.location.href.split('/').pop();
-		var recipeId = queryString.split('=').pop();
-
+	function populateRecipeDetails(){
 		//call projecteatz api to fetch recipe details
 		$.ajax({
 						method: 'GET',
@@ -57,9 +56,14 @@ var ProjectEatz = window.ProjectEatz || {};
 	}
 
 		function completeRequest(result) {
-			console.log(result);
+			//check result for server error (REVISIT THIS)
+			if (result.statusCode == 500){
+				alert('An error occured retrieving recipe:\n' + result.body);
+				return false;
+			}
+
 			//populate recipe name, category, description, createdby
-			$('#name').text(result.name);
+			$('#recipeName').text(result.recipeName);
 			$('#category').text(result.category);
 			$('#description').text(result.description);
 			$('#createdBy').text(result.createdBy);
@@ -88,14 +92,17 @@ var ProjectEatz = window.ProjectEatz || {};
 
 			//TO DO: render the image from AWS S3 on page
 
+			//hide buffering gif and make page visible
+			$('#buffering').css('display','none');
+			$('#container').css('display', 'block');
+
 	}
 
+	//function to handle edit recipe button
 	function handleEditRecipe(event){
 		var url = "update-recipe.html?recipeId=" + recipeId;
-		console.log(url);
 		window.location.href = url;
 	}
-
 }(jQuery));
 
 /*
