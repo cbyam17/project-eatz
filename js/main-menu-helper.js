@@ -15,4 +15,58 @@ var ProjectEatz = window.ProjectEatz || {};
       alert(error);
       window.location.href = 'signin.html';
   });
+
+  //get current user
+  var poolData = {
+      UserPoolId: _config.cognito.userPoolId,
+      ClientId: _config.cognito.userPoolClientId
+  };
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+  if (typeof AWSCognito !== 'undefined') {
+      AWSCognito.config.region = _config.cognito.region;
+  }
+  var currentUser = userPool.getCurrentUser().username.replace('-at-', '@');
+
+  //wrapper function for what happens on page load
+  $(function onDocReady(){
+		listMyRecipes();
+	});
+
+  function listMyRecipes(){
+    //call projecteatz api to fetch recipes for logged in user
+		$.ajax({
+						method: 'GET',
+						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe?createdBy='+currentUser.replace('@','-at-'),
+						headers: {
+							'Authorization': authToken
+						},
+						success: completeGetMyRecipesRequest,
+						error: function ajaxError(jqXHR, textStatus, errorThrown) {
+								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
+								console.error('Response: ', jqXHR.responseText);
+								alert('An error occured getting recipes:\n' + jqXHR.responseText);
+						}
+		});
+  }
+
+  function completeGetMyRecipesRequest(result){
+    //populate current users
+    $('#currentUser').text(currentUser);
+    //iterate through each recipe returned from api
+    for (i=0; i<result.length; i++){
+      var newRow = $('<tr>');
+      var cols = '';
+      cols += '<td><a href="view-recipe.html?recipeId='+result[i].id+'">'+result[i].recipeName+'</a></td>';
+      cols += '<td>'+result[i].category+'</td>';
+      newRow.append(cols);
+    	$('#myRecipesTable tbody').append(newRow);
+    }
+
+    //TO DO: add thumbnail images to each recipe (put in table/grid view)
+
+    //hide buffering gif and make page visible
+    $('#buffering').css('display','none');
+    $('#container').css('display', 'block');
+  }
+
 }(jQuery));

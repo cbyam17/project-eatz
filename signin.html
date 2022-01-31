@@ -2,7 +2,8 @@
 <html>
 <head>
 	<title>Project Eatz - Sign In</title>
-	<!-- <link rel="stylesheet" href="css/styles.css"> -->
+	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="css/forms.css">
 	<script src="js/vendor/jquery.min.js"></script>
 	<script src="js/vendor/aws-cognito-sdk.min.js"></script>
 	<script src="js/vendor/amazon-cognito-identity.min.js"></script>
@@ -10,16 +11,25 @@
 	<script src="js/cognito-auth.js"></script>
 </head>
 <body>
-	<a href="index.html">
-		<input type="button" class="back-button" id="goBack" value="Home"/>
-	</a>
-  <h1>Sign In</h1>
-    <form id="signinForm">
-      <input type="email" id="emailInputSignin" placeholder="Email" required>
-      <br><br>
-      <input type="password" id="passwordInputSignin" placeholder="Password" pattern=".*" required>
-      <br><br>
-      <input type="submit" value="Sign in">
-    </form>
+	<div id="container" class="container">
+		<div class="signinContainer">
+			<div>
+				<a href="index.html">
+					<input type="button" class="back-button" id="goBack" value="Home"/>
+				</a>
+			  <h1>Sign In</h1>
+			    <form class="formControl" id="signinForm" accept-charset="utf-8">
+			      <input type="email" id="emailInputSignin" placeholder="Email" required>
+			      <br><br>
+			      <input type="password" id="passwordInputSignin" placeholder="Password" pattern=".*" required>
+			      <br><br>
+			      <input type="submit" value="Sign in">
+			    </form>
+			</div>
+			<div>
+				<image src="img/Project-Eatz.png">
+			</div>
+		</div>
+	</div>
 </body>
 </html>

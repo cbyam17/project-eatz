@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>ProjectEatz - Menu</title>
-  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <link rel="stylesheet" href="css/styles.css">
   <script src="js/vendor/jquery.min.js"></script>
   <script src="js/vendor/aws-cognito-sdk.min.js"></script>
   <script src="js/vendor/amazon-cognito-identity.min.js"></script>
@@ -11,18 +11,33 @@
 	<script src="js/main-menu-helper.js"></script>
 </head>
 <body>
-<input type="button" id="signoutButton" value="Sign Out"/>
-<h1>What's on the menu?<h1>
-	<ul>
-		<li>
-			<a href="add-recipe.html">Add a recipe</a>
-		</li>
-		<li>
-			<a href="#">My recipes (tbd)</a>
-		</li>
-		<li>
-			<a href="browse-cookbook.html">Browse cookbook</a>
-		</li>
-	</ul>
+	<div id="buffering" class="buffering">
+    <img src="img/buffering.gif" alt="Buffering...">
+  </div>
+	<div id="container" class="container" style="display: none;">
+		<input type="button" id="signoutButton" value="Sign Out"/>
+		<p id="currentUser"></p>
+		<h1>What's on the menu?<h1>
+			<div class="menuCardContainer">
+				<div class="menuCard">
+					<a href="browse-cookbook.html">
+					  <img src="img/search-icon.png" width="50" height="50">
+						<h2>Browse cookbook</h2>
+					</a>
+				</div>
+				<div class="menuCard">
+					<a href="add-recipe.html">
+					  <img src="img/plus-icon.png" width="50" height="50">
+						<h2>Add a recipe</h2>
+					</a>
+				</div>
+			</div>
+		<h1>My Recipes</h1>
+		<table name="myRecipesTable" id="myRecipesTable" class="recipesTable">
+      <th>Recipe</th>
+      <th>Category</th>
+      <!-- tbody to be populated dynamically -->
+    </table>
+	</div>
 </body>
 </html>

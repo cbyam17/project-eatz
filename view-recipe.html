@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>ProjectEatz - View Recipe</title>
-  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <link rel="stylesheet" href="css/styles.css">
   <script src="js/vendor/jquery.min.js"></script>
   <script src="js/vendor/jquery.serializejson.min.js"></script>
   <script src="js/vendor/aws-cognito-sdk.min.js"></script>
@@ -12,33 +12,33 @@
   <script src="js/view-recipe-helper.js"></script>
 </head>
 <body>
-  <div id="buffering">
+  <div id="buffering" class="buffering">
     <img src="img/buffering.gif" alt="Buffering...">
   </div>
-  <div id="container" style="display: none;">
+  <div id="container" class="container" style="display: none;">
     <a href="main-menu.html">
       <input type="button" class="back-button" id="goBack" value="Main Menu"/>
     </a>
     <input type="button" id="signoutButton" value="Sign Out"/>
     <h1 id="recipeName"></h1>
+    <h2>Image (placeholder)</h2>
     <h2>Category</h2>
     <p id="category"></p>
     <h2>Description</h2>
     <p id="description"></p>
     <h2>Ingredients</h2>
-    <table name="ingredientsTable" id="ingredientsTable">
-      <!-- ingredients table body to be generated dynamically -->
-      <tbody></tbody>
-    </table>
+    <ul id="ingredients">
+      <!-- list items to be generated dynamically -->
+    </ul>
     <h2>Steps</h2>
-    <table name="stepsTable" id= "stepsTable">
-      <!-- steps table body to be generated dynamically -->
-      <tbody></tbody>
-    </table>
-    <h2>Image (placeholder)</h2>
+    <ol id="steps">
+      <!-- list items to be generated dynamically -->
+    </ol>
     <h3>Created By</h3>
     <p id="createdBy"></p>
-    <input type="button" id="editRecipeButton" value="Edit Recipe"/>
+    <div id="actionButtonContainer" class="actionButtonContainer">
+      <input type="button" id="editRecipeButton" value="Edit Recipe"/>
+    </div>
   </div>
 </body>
 </html>

@@ -70,24 +70,21 @@ var ProjectEatz = window.ProjectEatz || {};
 
 			//populate recipe ingredients table
 			for (i=0; i<result.ingredients.length; i++){
-				var newRow = $('<tr>');
-				var cols = '';
-				//note: keep these in sync with ingredients table in add-recipe.html and update-recipe.html
-				cols += '<td>'+result.ingredients[i].ingredient+'</td>';
-				cols += '<td>'+result.ingredients[i].notes+'</td>';
-				newRow.append(cols);
-				$('#ingredientsTable tbody').append(newRow);
+				var ingredient = result.ingredients[i].ingredient;
+				var notes = result.ingredients[i].notes;
+				var ingredientItem = '';
+				if (notes != ''){
+					ingredientItem = '<li>'+ingredient+' ('+notes+')</li>';
+				}
+				else ingredientItem = '<li>'+ingredient+'</li>'
+				$('#ingredients').append(ingredientItem);
 			}
 
-			//populate recipe steps stepsTable
+			//populate recipe steps as ordered list
 			for (i=0; i<result.steps.length; i++){
-				var newRow = $('<tr>');
-				var cols = '';
-				//note: keep these in sync with steps table in add-recipe.html and update-recipe.html
-				cols += '<td>'+(i+1)+'.</td>';
-				cols += '<td>'+result.steps[i]+'</td>';
-				newRow.append(cols);
-				$('#stepsTable tbody').append(newRow);
+				var step = result.steps[i];
+				var stepItem = '<li>'+result.steps[i]+'</li>';
+				$('#steps').append(stepItem);
 			}
 
 			//TO DO: render the image from AWS S3 on page

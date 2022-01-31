@@ -51,8 +51,9 @@ var ProjectEatz = window.ProjectEatz || {};
   	var cols = '';
   	//note: keep these in sync with ingredients table in add-recipe.html
   	cols += '<td><input type="text" name="ingredients[][ingredient]" id="ingredient"/></td>';
-    cols += '<td><textarea name="ingredients[][notes]" id="notes"></textarea></td>';
-  	cols += '<td><input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="-"/></td>';
+    cols += '<td><input type="text" name="ingredients[][notes]" id="notes"/></td>';
+    //cols += '<td><textarea name="ingredients[][notes]" id="notes"></textarea></td>';
+  	cols += '<td><input type="button" id="deleteIngredientButton" class="deleteButtonClass" value="Remove"/></td>';
   	newRow.append(cols);
   	$('#ingredientsTable tbody').append(newRow);
   	return false;
@@ -69,8 +70,8 @@ var ProjectEatz = window.ProjectEatz || {};
     var newRow = $('<tr>');
   	var cols = '';
   	//note: keep these in sync with steps table in add-recipe.html
-  	cols += '<td><textarea name="steps[]" id="step"></textarea></td>';
-  	cols += '<td><input type="button" id="deleteStepButton" class="deleteButtonClass" value="-"/></td>';
+  	cols += '<td><textarea name="steps[]" id="step" rows="3"></textarea></td>';
+  	cols += '<td><input type="button" id="deleteStepButton" class="deleteButtonClass" value="Remove"/></td>';
   	newRow.append(cols);
   	$('#stepsTable tbody').append(newRow);
   	return false;

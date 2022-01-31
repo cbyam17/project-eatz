@@ -2,7 +2,8 @@
 <html>
 <head>
 	<title>Project Eatz - Register</title>
-	<!-- <link rel="stylesheet" href="css/styles.css"> -->
+	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="css/forms.css">
 	<script src="js/vendor/jquery.min.js"></script>
 	<script src="js/vendor/aws-cognito-sdk.min.js"></script>
 	<script src="js/vendor/amazon-cognito-identity.min.js"></script>
@@ -10,18 +11,27 @@
 	<script src="js/cognito-auth.js"></script>
 </head>
 <body>
-	<a href="index.html">
-		<input type="button" class="back-button" id="goBack" value="Home"/>
-	</a>
-	<h1>Register</h1>
-  <form id="registrationForm">
-  	<input type="email" id="emailInputRegister" placeholder="Email" pattern=".*" required>
-		<br><br>
-    <input type="password" id="passwordInputRegister" placeholder="Password" pattern=".*" required>
-		<br><br>
-    <input type="password" id="password2InputRegister" placeholder="Confirm Password" pattern=".*" required>
-		<br><br>
-		<input type="submit" value="Register">
-  </form>
+	<div id="container" class="container">
+		<div class="signinContainer">
+			<div>
+				<a href="index.html">
+					<input type="button" class="back-button" id="goBack" value="Home"/>
+				</a>
+				<h1>Register</h1>
+			  <form class="formControl" id="registrationForm" accept-charset="utf-8">
+			  	<input type="email" id="emailInputRegister" placeholder="Email" pattern=".*" required>
+					<br><br>
+			    <input type="password" id="passwordInputRegister" placeholder="Password" pattern=".*" required>
+					<br><br>
+			    <input type="password" id="password2InputRegister" placeholder="Confirm Password" pattern=".*" required>
+					<br><br>
+					<input type="submit" value="Register">
+			  </form>
+			</div>
+			<div>
+				<image src="img/Project-Eatz.png">
+			</div>
+		</div>
+	</div>
 </body>
 </html>

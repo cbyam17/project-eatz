@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ProjectEatz - Update Recipe</title>
-  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <title>ProjectEatz - Edit Recipe</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/forms.css">
   <script src="js/vendor/jquery.min.js"></script>
   <script src="js/vendor/jquery.serializejson.min.js"></script>
   <script src="js/vendor/aws-cognito-sdk.min.js"></script>
@@ -12,18 +13,18 @@
   <script src="js/update-recipe-helper.js"></script>
 </head>
 <body>
-  <div id="buffering">
+  <div id="buffering" class="buffering">
     <img src="img/buffering.gif" alt="Buffering...">
   </div>
-  <div id="container" style="display: none;">
+  <div id="container" class="container" style="display: none;">
     <a href="main-menu.html">
       <input type="button" class="back-button" id="goBack" value="Main Menu"/>
     </a>
     <input type="button" id="signoutButton" value="Sign Out"/>
-    <h1>Update Recipe</h1>
-    <p>To save your changes, click "Update Recipe" button at the bottom of the page.</p>
-    <form class="form" name="updateRecipeForm" id="updateRecipeForm" accept-charset="utf-8">
-      <input type="text" name="recipeName" id="recipeName"/>
+    <h1>Edit Recipe</h1>
+    <p>To save your changes, click "Submit" at the bottom of the page.</p>
+    <form class="formControl" name="updateRecipeForm" id="updateRecipeForm" accept-charset="utf-8">
+      <input type="text" name="recipeName" id="recipeName" placeholder="Recipe name"/>
       <br><br>
       <select name="category" id="category">
         <option selected>--select category--</option>
@@ -35,7 +36,7 @@
         <option value="Other">Other</option>
       </select>
       <br><br>
-      <textarea name="description" id="description"></textarea>
+      <textarea name="description" id="description" rows="3" placeholder="Description, number of servings, special tips, substitutions, etc."></textarea>
       <p>Ingredients</p>
       <table name="ingredientsTable" id="ingredientsTable">
         <!-- ingredients table body to be generated dynamically -->
@@ -43,7 +44,7 @@
         <tfoot>
           <tr>
             <td>
-              <input type="button" id="addIngredientButton" value="+"/>
+              <input type="button" id="addIngredientButton" class="addButton" value="Add"/>
             </td>
             <td></td>
             <td></td>
@@ -57,7 +58,7 @@
         <tfoot>
           <tr>
             <td>
-              <input type="button" id="addStepButton" value="+"/>
+              <input type="button" id="addStepButton" class="addButton" value="Add"/>
             </td>
           </tr>
         </tfoot>
@@ -66,8 +67,10 @@
       <input type="file" name="image" id="image"/>
       <br>
       <br>
-      <input type="button" id="cancelUpdateRecipeButton" value="Cancel"/>
-      <input type="submit" value="Update Recipe">
+      <div id="formActionButtons" class="formActionButtons">
+        <input type="button" id="cancelUpdateRecipeButton" class="cancelButton" value="Cancel"/>
+        <input type="submit" value="Submit">
+      </div>
     </form>
   </div>
 </body>
