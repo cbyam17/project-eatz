@@ -12,23 +12,34 @@
   <script src="js/browse-cookbook-helper.js"></script>
 </head>
 <body>
-  <div id="buffering">
+  <!--<div id="buffering" class="buffering">
     <img src="img/buffering.gif" alt="Buffering...">
-  </div>
-  <div id="container" class="container" style="display: none;">
+  </div>-->
+  <div id="container" class="container">
     <a href="main-menu.html">
       <input type="button" class="back-button" id="goBack" value="Main Menu"/>
     </a>
     <input type="button" id="signoutButton" value="Sign Out"/>
     <h1>Browse Cookbook</h1>
-    <p>Let's find something to eat. Click on a recipe to view it.</p>
-    <!-- table for recipes -->
-    <table name="recipesTable" id="recipesTable" class="recipesTable">
-      <th>Recipe</th>
-      <th>Category</th>
-      <th>Created By</th>
-      <!-- tbody to be populated dynamically -->
-    </table>
+    <p>Let's find something to eat. Click on a category to get started.</p>
+    <input type="button" id="viewAppsButton" value="Appetizers"/>
+    <input type="button" id="viewMainsButton" value="Main Dishes"/>
+    <input type="button" id="viewSidesButton" value="Sides"/>
+    <input type="button" id="viewDessertsButton" value="Desserts"/>
+    <input type="button" id="viewDrinksButton" value="Drinks"/>
+    <br><br>
+    <div id="recipesTableContainer" style="display: none;">
+      <!-- table for recipes -->
+      <table id="browseRecipesTable" class="browseRecipesTable">
+        <thead>
+          <th class="recipeName">Recipe</th>
+          <th class="category">Category</th>
+          <th class="createdBy">Created By</th>
+        </thead>
+        <!-- tbody to be populated dynamically -->
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 </body>
 </html>

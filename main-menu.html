@@ -15,6 +15,9 @@
     <img src="img/buffering.gif" alt="Buffering...">
   </div>
 	<div id="container" class="container" style="display: none;">
+		<div class="headerContainer">
+				<image src="img/Project-Eatz.png">
+		</div>
 		<input type="button" id="signoutButton" value="Sign Out"/>
 		<p id="currentUser"></p>
 		<h1>What's on the menu?<h1>
@@ -33,10 +36,13 @@
 				</div>
 			</div>
 		<h1>My Recipes</h1>
-		<table name="myRecipesTable" id="myRecipesTable" class="recipesTable">
-      <th>Recipe</th>
-      <th>Category</th>
+		<table id="myRecipesTable" class="myRecipesTable">
+			<thead>
+	      <th class="recipeName">Recipe</th>
+	      <th class="category">Category</th>
+			</thead>
       <!-- tbody to be populated dynamically -->
+			<tbody></tbody>
     </table>
 	</div>
 </body>
