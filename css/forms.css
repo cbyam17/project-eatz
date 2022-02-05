@@ -4,6 +4,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.formControl p, h1{
+  text-align: left;
+}
+
 .formControl textarea {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
@@ -13,6 +17,11 @@
 .formControl input[type=text] {
   font-size: 12px;
 }
+
+.formControl input[type=text].recipeName {
+  width: 50%;
+}
+
 
 .formControl input[type=email] {
   font-size: 12px;

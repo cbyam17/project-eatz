@@ -11,17 +11,25 @@
   <script src="js/config.js"></script>
   <script src="js/cognito-auth.js"></script>
   <script src="js/add-recipe-helper.js"></script>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
 </head>
 <body>
+  <div id="navBarContainer">
+		<ul class="navBar">
+			<li>
+				<a href="main-menu.html">Main Menu</a>
+			</li>
+			<li>
+				<!--link to signout function-->
+				<a id="signoutLink" href="#">Sign Out</a>
+			</li>
+		</ul>
+	</div>
   <div id="container" class="container">
-    <a href="main-menu.html">
-      <input type="button" class="back-button" id="goBack" value="Main Menu"/>
-    </a>
-    <input type="button" id="signoutButton" value="Sign Out"/>
-    <h1>Add Recipe</h1>
-    <p>Don't worry if it's not perfect. You'll be able to edit it later.</p>
     <form class="formControl" name="addRecipeForm" id="addRecipeForm" accept-charset="utf-8">
-      <input type="text" name="recipeName" id="recipeName" placeholder="Recipe name">
+      <h1>Add Recipe</h1>
+      <p>Don't worry if it's not perfect. You'll be able to edit it later.</p>
+      <input type="text" name="recipeName" id="recipeName" class="recipeName" placeholder="Recipe name">
       <br><br>
       <select name="category" id="category">
         <option selected>--select category--</option>
@@ -80,10 +88,9 @@
           </tr>
         </tfoot>
       </table>
-      <p>Picture (optional)<p>
-      <input type="file" id="image"name="image" id="image"/>
-      <br>
-      <br>
+      <!-- <p>Add picture (optional)</p>
+      <input type="file" id="fileInput"name="fileInput"/> -->
+      <br><br>
       <div id="formActionButtons" class="formActionButtons">
         <input type="button" id="cancelAddRecipeButton" class="cancelButton" value="Cancel"/>
         <input type="submit" value="Submit">

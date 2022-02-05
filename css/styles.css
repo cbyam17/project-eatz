@@ -11,7 +11,54 @@ div.container {
   padding: 25px;
 }
 
+div.imageContainer {
+  width: auto;
+  display: inline-block;
+}
+
+div.imageContainer img {
+  width: 50%; /* Will shrink image to 30% of its original width */
+  height: auto;
+}​
+
+
 div.container a {
+  text-decoration: none;
+}
+
+div.mainMenuContainer h1{
+  text-align: center;
+}
+
+div.mainMenuContainer p{
+  text-align: center;
+}
+
+div.browseCookbookContainer h1{
+  text-align: left;
+}
+
+div.browseCookbookContainer p{
+  text-align: left;
+}
+
+ul.navBar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #343D52;
+}
+
+ul.navBar li{
+  float: left;
+}
+
+ul.navBar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 10px;
   text-decoration: none;
 }
 

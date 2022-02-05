@@ -100,7 +100,7 @@ var ProjectEatz = window.ProjectEatz || {};
   	//call projecteatz api to create new recipe
     $.ajax({
             method: 'POST',
-            url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe',
+            url: _config.api.invokeUrl + '/recipe',
             headers: {
               'Authorization': authToken
             },
@@ -118,13 +118,61 @@ var ProjectEatz = window.ProjectEatz || {};
   //function that runs upon successful create of new recipe
   function completeRequest(result) {
 
-    //TO DO: send image file to AWS S3 instance (see below snippet)
-
-    //send user to view-recipe.html
+    //get newly created recipeId from response
     var recipeId = result.id;
+
+    //send image file to AWS S3 instance if there is a picture
+    /*var file = $('#fileInput').prop('files')[0];
+    if (file){
+      uploadPicture(recipeId, file);
+    }*/
+
+    //send user to view-recipe.html to see newly created recipe
     var url = "view-recipe.html?recipeId=" + recipeId;
     window.location.href = url;
-    }
+  }
+
+  /*function uploadPicture(recipeId, file){
+    //initialize aws s3 config
+    var bucketName = _config.s3.bucketName;
+    var bucketRegion = _config.s3.region;
+    var identityPoolId = _config.s3.identityPoolId;
+
+    // Initialize the Amazon Cognito credentials provider
+    AWS.config.region = bucketRegion;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: identityPoolId,
+    });
+
+    var s3 = new AWS.S3({
+      apiVersion: '2006-03-01',
+      params: {Bucket: bucketName}
+    });
+
+    var fileName = file.name;
+    var recipePhotosKey = encodeURIComponent(recipeId) + "/";
+    var photoKey = recipePhotosKey + fileName;
+
+    // Use S3 ManagedUpload class as it supports multipart uploads
+    var upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: bucketName,
+        Key: photoKey,
+        Body: file
+      }
+    });
+
+    var promise = upload.promise();
+
+    promise.then(
+      function(data) {
+        alert("Successfully added recipe.");
+      },
+      function(err) {
+        return alert("There was an error uploading your photo: ", err.message);
+      }
+    );
+  }*/
 
 }(jQuery));
 
