@@ -51,7 +51,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function completeGetMyRecipesRequest(result){
     //populate current users
-    $('#currentUser').text(currentUser);
+    $('#currentUser').text('User: ' + currentUser);
     //iterate through each recipe returned from api
     for (i=0; i<result.length; i++){
       var newRow = $('<tr>');

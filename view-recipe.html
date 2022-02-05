@@ -12,16 +12,29 @@
   <script src="js/view-recipe-helper.js"></script>
 </head>
 <body>
+  <div id="navBarContainer">
+		<ul class="navBar">
+			<li>
+				<a href="main-menu.html">Main Menu</a>
+			</li>
+			<li>
+				<!--link to signout function-->
+				<a id="signoutLink" href="#">Sign Out</a>
+			</li>
+		</ul>
+	</div>
   <div id="buffering" class="buffering">
     <img src="img/buffering.gif" alt="Buffering...">
   </div>
   <div id="container" class="container" style="display: none;">
-    <a href="main-menu.html">
-      <input type="button" class="back-button" id="goBack" value="Main Menu"/>
+    <br>
+    <a href="browse-cookbook.html">
+      <input type="button" id="cookbookButton" value="Cookbook"/>
     </a>
-    <input type="button" id="signoutButton" value="Sign Out"/>
     <h1 id="recipeName"></h1>
-    <h2>Image (placeholder)</h2>
+    <!-- <div class="imageContainer">
+				<img src="img/Burger.jpg">
+		</div> -->
     <h2>Category</h2>
     <p id="category"></p>
     <h2>Description</h2>
@@ -37,7 +50,7 @@
     <h3>Created By</h3>
     <p id="createdBy"></p>
     <div id="actionButtonContainer" class="actionButtonContainer">
-      <input type="button" id="editRecipeButton" value="Edit Recipe"/>
+      <input type="button" id="editRecipeButton" class="editRecipeButton" value="Edit Recipe"/>
     </div>
   </div>
 </body>

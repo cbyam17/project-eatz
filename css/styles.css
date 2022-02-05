@@ -11,6 +11,61 @@ div.container {
   padding: 25px;
 }
 
+div.imageContainer {
+  width: auto;
+  display: inline-block;
+}
+
+div.imageContainer img {
+  width: 50%; /* Will shrink image to 30% of its original width */
+  height: auto;
+}​
+
+
+div.container a {
+  text-decoration: none;
+}
+
+div.mainMenuContainer h1{
+  text-align: center;
+}
+
+div.mainMenuContainer p{
+  text-align: center;
+}
+
+div.browseCookbookContainer h1{
+  text-align: left;
+}
+
+div.browseCookbookContainer p{
+  text-align: left;
+}
+
+ul.navBar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #343D52;
+}
+
+ul.navBar li{
+  float: left;
+}
+
+ul.navBar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 10px;
+  text-decoration: none;
+}
+
+div.headerContainer {
+  text-align: center;
+}
+
 div.buffering{
   text-align: center;
 }
@@ -20,6 +75,17 @@ input[type=button]{
   color: white;
   border: none;
   background-color: #343D52;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+input[type=button].editRecipeButton{
+  width: auto;
+  color: white;
+  border: none;
+  background-color: #008080;
   font-size: 16px;
   border-radius: 5px;
   padding: 3px;
@@ -56,23 +122,72 @@ div.menuCard a{
   color: inherit;
 }
 
-table.recipesTable{
+table.browseRecipesTable{
   width: 100%;
-  border: 1px solid #343D52;
   border-collapse: collapse;
 }
 
-table.recipesTable th, td{
-  border: 1px solid #343D52;
-  border-collapse: collapse;
+table.browseRecipesTable td{
+  border: 1px solid #B3B3B3;
   padding: 5px;
   font-size: 12px;
 }
 
-table.recipesTable th{
+table.browseRecipesTable th{
+  border: 1px solid #343D52;
   background-color: #343D52;
   color: white;
   text-align: left;
+  padding: 5px;
+  font-size: 14px;
+}
+
+table.browseRecipesTable th.recipeName{
+  width: 60%;
+}
+
+table.browseRecipesTable th.category{
+  width: 15%;
+}
+
+table.browseRecipesTable th.createdBy{
+  width: 25%;
+}
+
+table.browseRecipesTable tr td a{
+  color: #008080;
+}
+
+table.myRecipesTable{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.myRecipesTable td{
+  border: 1px solid #B3B3B3;
+  padding: 5px;
+  font-size: 12px;
+}
+
+table.myRecipesTable th{
+  border: 1px solid #343D52;
+  background-color: #343D52;
+  color: white;
+  text-align: left;
+  padding: 5px;
+  font-size: 14px;
+}
+
+table.myRecipesTable th.recipeName{
+  width: 80%;
+}
+
+table.myRecipesTable th.category{
+  width: 20%;
+}
+
+table.myRecipesTable tr td a{
+  color: #008080;
 }
 
 div.actionButtonContainer {

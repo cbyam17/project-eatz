@@ -42,6 +42,7 @@ var ProjectEatz = window.ProjectEatz || {};
     $('#registrationForm').submit(handleRegister);
     $('#verifyForm').submit(handleVerify);
     $('#signoutButton').on('click', handleSignout);
+    $('#signoutLink').on('click', handleSignout);
   });
 
   /*
@@ -159,6 +160,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function handleSignout(event){
     event.preventDefault();
+    console.log('logout');
     var res = userPool.getCurrentUser().signOut();
     window.location.href = 'index.html';
   }

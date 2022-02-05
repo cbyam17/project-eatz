@@ -41,7 +41,7 @@ var ProjectEatz = window.ProjectEatz || {};
 		//call projecteatz api to fetch recipe details
 		$.ajax({
 						method: 'GET',
-						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe/' + recipeId,
+						url: _config.api.invokeUrl + '/recipe/' + recipeId,
 						headers: {
 							'Authorization': authToken
 						},

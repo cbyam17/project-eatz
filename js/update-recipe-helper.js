@@ -43,6 +43,45 @@ var ProjectEatz = window.ProjectEatz || {};
   });
 
 	function populateRecipeDetails(){
+
+    /*code to get the picture from aws s3
+
+    //initialize aws s3 config
+    var bucketName = _config.s3.bucketName;
+    var bucketRegion = _config.s3.region;
+    var identityPoolId = _config.s3.identityPoolId;
+
+    // Initialize the Amazon Cognito credentials provider
+    AWS.config.region = bucketRegion;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: identityPoolId,
+    });
+
+    var s3 = new AWS.S3({
+      apiVersion: '2006-03-01',
+      params: {Bucket: bucketName}
+    });
+
+    var recipePhotosKey = encodeURIComponent(recipeId) + "/";
+    s3.listObjects({ Prefix: recipePhotosKey }, function(err, data) {
+      if (err) {
+        return alert("There was an error retrieving recipe picture: " + err.message);
+      }
+      // 'this' references the AWS.Response instance that represents the response
+      var href = this.request.httpRequest.endpoint.href;
+      var bucketUrl = href + bucketName + "/";
+
+      if (data.Contents.length < 2){
+        console.log('no photo');
+      }
+      else {
+        var photoKey = data.Contents[1].Key;
+        var photoUrl = bucketUrl + encodeURIComponent(photoKey);
+        var img = $('<img>').prop('src', photoUrl);
+        $('#imageContainer').append(img);
+      }
+    });*/
+
 		//call projecteatz api to fetch recipe details
 		$.ajax({
 						method: 'GET',
@@ -62,7 +101,7 @@ var ProjectEatz = window.ProjectEatz || {};
 	function completeGetRecipeRequest(result){
 		//check result for server error
 		if (result.statusCode == 500){
-			alert('An error occured when adding your recipe:\n' + result.body);
+			alert('An error occured when updating your recipe:\n' + result.body);
 			return false;
 		}
 

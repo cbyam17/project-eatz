@@ -9,6 +9,7 @@ var ProjectEatz = window.ProjectEatz || {};
 (function scopeWrapper($) {
 
   //redirect user to signin page if not logged in
+  var category;
   var authToken;
   ProjectEatz.authToken.then(function setAuthToken(token) {
       if (token) {
@@ -22,51 +23,77 @@ var ProjectEatz = window.ProjectEatz || {};
       window.location.href = 'signin.html';
   });
 
-	//DEBUGGING ONLY: create test JSON for debugging
-	//var dataStr = '[{\n\t\t\"id\": \"123ABC\",\n\t\t\"name\": \"Test recipe 1\",\n\t\t\"category\": \"Main\",\n\t\t\"description\": \"Makes about 4-6 servings\",\n\t\t\"ingredients\": [{\n\t\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\t\"notes\": \"Finely chopped\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t\t}\n\n\t\t],\n\t\t\"steps\": [\n\t\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t\t]\n\t},\n\t{\n\t\t\"id\": \"456ABC\",\n\t\t\"name\": \"Test recipe 2\",\n\t\t\"category\": \"Appetizer\",\n\t\t\"description\": \"To make this a meal, just double the recipe\",\n\t\t\"ingredients\": [{\n\t\t\t\t\"ingredient\": \"1 roma tomato\",\n\t\t\t\t\"notes\": \"Diced, but canned also works too\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"ingredient\": \"1 Tbsp olive oil\",\n\t\t\t\t\"notes\": \"Any neutral oil can be used\"\n\t\t\t}\n\t\t],\n\t\t\"steps\": [\n\t\t\t\"Add diced tomatoes to a large pan over medium heat\",\n\t\t\t\"Stir in the oil and sautee for a few minutes\"\n\t\t]\n\t}\n]';
-	//var dataJSON = JSON.parse(dataStr);
-	//console.log(dataJSON);
-
-	//TO DO: fetch all recipes from api
-
+  //functions to perform on page load
 	$(function onDocReady(){
-		listAllRecipes();
+    $('#viewAppsButton').on('click', handleViewApps);
+    $('#viewMainsButton').on('click', handleViewMains);
+    $('#viewSidesButton').on('click', handleViewSides);
+    $('#viewDessertsButton').on('click', handleViewDesserts);
+    $('#viewDrinksButton').on('click', handleViewDrinks);
 	});
 
-	function listAllRecipes(){
+  function handleViewApps(){
+    category = 'Appitizer';
+    getRecipesByCategory(category);
+  }
+
+  function handleViewMains(){
+    category = 'Main';
+    getRecipesByCategory(category);
+  }
+
+  function handleViewSides(){
+    category = 'Side';
+    getRecipesByCategory(category);
+  }
+
+  function handleViewDesserts(){
+    category = 'Dessert';
+    getRecipesByCategory(category);
+  }
+
+  function handleViewDrinks(){
+    category = 'Drink';
+    getRecipesByCategory(category);
+  }
+
+  //function to get main dish recipes from api and display
+  function getRecipesByCategory(category){
     //call projecteatz api to fetch recipes
 		$.ajax({
 						method: 'GET',
-						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe',
+						url: _config.api.invokeUrl + '/recipe?category=' + category,
 						headers: {
 							'Authorization': authToken
 						},
-						success: completeGetRecipesRequest,
+						success: completeGetRecipesByCategoryRequest,
 						error: function ajaxError(jqXHR, textStatus, errorThrown) {
 								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
 								console.error('Response: ', jqXHR.responseText);
 								alert('An error occured getting recipes:\n' + jqXHR.responseText);
 						}
 		});
-	}
+  }
 
-  function completeGetRecipesRequest(result){
+  function completeGetRecipesByCategoryRequest(result){
+    //remove current table rows
+    $('#browseRecipesTable tbody tr').remove();
     //iterate through each recipe returned from api
     for (i=0; i<result.length; i++){
       var newRow = $('<tr>');
       var cols = '';
-      cols += '<td><a href="view-recipe.html?recipeId='+result[i].id+'">'+result[i].recipeName+'</a></td>';
-      cols += '<td>'+result[i].category+'</td>';
-      cols += '<td>'+result[i].createdBy+'</td>';
+      cols += '<td><a href="' + 'view-recipe.html?recipeId=' + result[i].id + '">' + result[i].recipeName + '</a></td>';
+      cols += '<td>' + result[i].category + '</td>';
+      cols += '<td>' + result[i].createdBy + '</td>';
       newRow.append(cols);
-    	$('#recipesTable tbody').append(newRow);
+    	$('#browseRecipesTable tbody').append(newRow);
     }
 
     //TO DO: add thumbnail images to each recipe (put in table/grid view)
 
     //hide buffering gif and make page visible
-    $('#buffering').css('display','none');
-    $('#container').css('display', 'block');
+    //$('#buffering').css('display','none');
+    $('#recipesTableContainer').css('display', 'block');
   }
 
 }(jQuery));

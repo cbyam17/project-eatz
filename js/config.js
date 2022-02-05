@@ -9,9 +9,9 @@ window._config = {
         token: '0eb6b64d-4aee-40d9-908d-4846044ee0f0'
     },
     s3: {
-      apiVersion: '', // e.g. 2006-03-01
-      bucketName: '', // e.g. my-recipe-pictures
-      credentials: '',
-      region: '' // e.g. us-east-2
+      apiVersion: '2006-03-01',
+      bucketName: 'projecteatz-recipes-dev',
+      identityPoolId: 'us-east-1:8b7088fb-0039-44ee-93b0-beb71e590aa9',
+      region: 'us-east-1'
     }
 };
