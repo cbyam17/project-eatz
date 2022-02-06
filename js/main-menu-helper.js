@@ -36,7 +36,7 @@ var ProjectEatz = window.ProjectEatz || {};
     //call projecteatz api to fetch recipes for logged in user
 		$.ajax({
 						method: 'GET',
-						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe?createdBy='+currentUser,
+						url: _config.api.invokeUrl + '/recipe?createdBy=' + currentUser,
 						headers: {
 							'Authorization': authToken
 						},
