@@ -23,6 +23,17 @@ var ProjectEatz = window.ProjectEatz || {};
 			window.location.href = 'signin.html';
 	});
 
+	//get current user
+  var poolData = {
+      UserPoolId: _config.cognito.userPoolId,
+      ClientId: _config.cognito.userPoolClientId
+  };
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+  if (typeof AWSCognito !== 'undefined') {
+      AWSCognito.config.region = _config.cognito.region;
+  }
+  var currentUser = userPool.getCurrentUser().username;
+
 	//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
 	var queryString = window.location.href.split('/').pop();
 	var recipeId = queryString.split('=').pop();
@@ -90,6 +101,9 @@ var ProjectEatz = window.ProjectEatz || {};
 			//TO DO: render the image from AWS S3 on page
 
 			//hide buffering gif and make page visible
+			if (currentUser == result.createdBy){
+				$('#editRecipeButton').css('display', 'inline');
+			}
 			$('#buffering').css('display','none');
 			$('#container').css('display', 'block');
 
