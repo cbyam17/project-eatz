@@ -25,7 +25,7 @@ var ProjectEatz = window.ProjectEatz || {};
   if (typeof AWSCognito !== 'undefined') {
       AWSCognito.config.region = _config.cognito.region;
   }
-  var currentUser = userPool.getCurrentUser().username.replace('-at-', '@');
+  var currentUser = userPool.getCurrentUser().username; //.replace('-at-', '@');
 
   //wrapper function for what happens on page load
   $(function onDocReady(){
@@ -36,7 +36,7 @@ var ProjectEatz = window.ProjectEatz || {};
     //call projecteatz api to fetch recipes for logged in user
 		$.ajax({
 						method: 'GET',
-						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe?createdBy='+currentUser.replace('@','-at-'),
+						url: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/dev/recipe?createdBy='+currentUser,
 						headers: {
 							'Authorization': authToken
 						},
@@ -51,7 +51,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function completeGetMyRecipesRequest(result){
     //populate current users
-    $('#currentUser').text('User: ' + currentUser);
+    $('#currentUser').text('Welcome, ' + currentUser + '!');
     //iterate through each recipe returned from api
     for (i=0; i<result.length; i++){
       var newRow = $('<tr>');

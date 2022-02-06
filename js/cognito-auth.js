@@ -50,10 +50,10 @@ var ProjectEatz = window.ProjectEatz || {};
    */
 
    function handleSignin(event) {
-       var email = $('#emailInputSignin').val();
+       var username = $('#usernameInputSignin').val();
        var password = $('#passwordInputSignin').val();
        event.preventDefault();
-       signin(email, password,
+       signin(username, password,
            function signinSuccess() {
                console.log('Successfully Logged In');
                window.location.href = 'main-menu.html';
@@ -64,14 +64,14 @@ var ProjectEatz = window.ProjectEatz || {};
        );
    }
 
-  function register(email, password, onSuccess, onFailure) {
+  function register(email, password, username, onSuccess, onFailure) {
       var dataEmail = {
-          Name: 'email',
-          Value: email
+        Name: 'email',
+        Value: email
       };
       var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
 
-      userPool.signUp(toUsername(email), password, [attributeEmail], null,
+      userPool.signUp(username, password, [attributeEmail], null,
           function signUpCallback(err, result) {
               if (!err) {
                   onSuccess(result);
@@ -82,21 +82,21 @@ var ProjectEatz = window.ProjectEatz || {};
       );
   }
 
-  function signin(email, password, onSuccess, onFailure) {
+  function signin(username, password, onSuccess, onFailure) {
       var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-          Username: toUsername(email),
+          Username: username,
           Password: password
       });
 
-      var cognitoUser = createCognitoUser(email);
+      var cognitoUser = createCognitoUser(username);
       cognitoUser.authenticateUser(authenticationDetails, {
           onSuccess: onSuccess,
           onFailure: onFailure
       });
   }
 
-  function verify(email, code, onSuccess, onFailure) {
-      createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
+  function verify(username, code, onSuccess, onFailure) {
+      createCognitoUser(username).confirmRegistration(code, true, function confirmCallback(err, result) {
           if (!err) {
               onSuccess(result);
           } else {
@@ -105,9 +105,9 @@ var ProjectEatz = window.ProjectEatz || {};
       });
   }
 
-  function createCognitoUser(email) {
+  function createCognitoUser(username) {
       return new AmazonCognitoIdentity.CognitoUser({
-          Username: toUsername(email),
+          Username: username,
           Pool: userPool
       });
   }
@@ -118,6 +118,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function handleRegister(event) {
       var email = $('#emailInputRegister').val();
+      var username = $('#usernameInputRegister').val();
       var password = $('#passwordInputRegister').val();
       var password2 = $('#password2InputRegister').val();
 
@@ -135,17 +136,18 @@ var ProjectEatz = window.ProjectEatz || {};
       event.preventDefault();
 
       if (password === password2) {
-          register(email, password, onSuccess, onFailure);
+          register(email, password, username, onSuccess, onFailure);
       } else {
           alert('Passwords do not match');
       }
   }
 
   function handleVerify(event) {
-      var email = $('#emailInputVerify').val();
+      //var email = $('#emailInputVerify').val();
+      var username = $('#usernameInputVerify').val();
       var code = $('#codeInputVerify').val();
       event.preventDefault();
-      verify(email, code,
+      verify(username, code,
           function verifySuccess(result) {
               console.log('call result: ' + result);
               console.log('Successfully verified');
@@ -160,7 +162,6 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function handleSignout(event){
     event.preventDefault();
-    console.log('logout');
     var res = userPool.getCurrentUser().signOut();
     window.location.href = 'index.html';
   }
