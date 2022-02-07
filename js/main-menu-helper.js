@@ -56,7 +56,12 @@ var ProjectEatz = window.ProjectEatz || {};
     for (i=0; i<result.length; i++){
       var newRow = $('<tr>');
       var cols = '';
-      cols += '<td><a href="view-recipe.html?recipeId='+result[i].id+'">'+result[i].recipeName+'</a></td>';
+      if (result[i].isPlantBased){
+        cols += '<td><a href="view-recipe.html?recipeId='+result[i].id+'">'+result[i].recipeName+' </a><img src="img/plant-based-icon.png" height="15" width="15"></td>';
+      }
+      else {
+        cols += '<td><a href="view-recipe.html?recipeId='+result[i].id+'">'+result[i].recipeName+'</a></td>';
+      }
       cols += '<td>'+result[i].category+'</td>';
       newRow.append(cols);
     	$('#myRecipesTable tbody').append(newRow);

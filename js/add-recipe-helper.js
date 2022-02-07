@@ -95,6 +95,13 @@ var ProjectEatz = window.ProjectEatz || {};
   	var createRecipeDataJSON = $('#addRecipeForm').serializeJSON();
     //add createdBy user to JSON objeect
     createRecipeDataJSON.createdBy = currentUser;
+    //update 'on' and 'off' to true or false
+    if (createRecipeDataJSON.isPlantBased == 'on') {
+      createRecipeDataJSON.isPlantBased = true;
+    }
+    else {
+      createRecipeDataJSON.isPlantBased = false;
+    }
     event.preventDefault();
 
   	//call projecteatz api to create new recipe
@@ -128,6 +135,7 @@ var ProjectEatz = window.ProjectEatz || {};
     }*/
 
     //send user to view-recipe.html to see newly created recipe
+    alert('Recipe created successfully');
     var url = "view-recipe.html?recipeId=" + recipeId;
     window.location.href = url;
   }

@@ -39,9 +39,14 @@
         <option value="Dessert">Dessert</option>
         <option value="Drink">Drink</option>
       </select>
+      <input type="checkbox" id="isPlantBased" name="isPlantBased">
+      <label for="isPlantBased">Plant-based</label>
+      <img src="img/plant-based-icon.png" height="15" width="15">
       <br><br>
       <textarea name="description" id="description" rows="3" placeholder="Description, number of servings, special tips, substitutions, etc."></textarea>
-      <p>Ingredients</p>
+      <!-- <p>Ingredients</p> -->
+      <br><br>
+      <label for="ingredientsTable">Ingredients</label>
       <table name="ingredientsTable" id="ingredientsTable">
         <!-- ingredients table body -->
         <tbody>
@@ -68,7 +73,9 @@
           </tr>
         </tfoot>
       </table>
-      <p>Steps</p>
+      <br>
+      <!-- <p>Steps</p> -->
+      <label for="stepsTable">Steps</label>
       <table name="stepsTable" id= "stepsTable">
         <tbody>
           <tr>

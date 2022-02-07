@@ -18,10 +18,13 @@
   font-size: 12px;
 }
 
+.formControl label {
+  font-size: 12px;
+}
+
 .formControl input[type=text].recipeName {
   width: 50%;
 }
-
 
 .formControl input[type=email] {
   font-size: 12px;

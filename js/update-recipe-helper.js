@@ -109,6 +109,7 @@ var ProjectEatz = window.ProjectEatz || {};
 		$('#recipeName').val(result.recipeName);
 		$('#category').val(result.category);
 		$('#description').val(result.description);
+    $('#isPlantBased').prop('checked', result.isPlantBased);
 
 		//populate recipe ingredients table
 		for (i=0; i<result.ingredients.length; i++){
@@ -188,7 +189,14 @@ var ProjectEatz = window.ProjectEatz || {};
 	function handleUpdateRecipe(event){
 		//serialize form data as formatted JSON object (this doesn't capture the picture)
 		var updatedRecipeDataJSON = $('#updateRecipeForm').serializeJSON();
-		event.preventDefault();
+    //update 'on' and 'off' to true or false
+    if (updatedRecipeDataJSON.isPlantBased == 'on') {
+      updatedRecipeDataJSON.isPlantBased = true;
+    }
+    else {
+      updatedRecipeDataJSON.isPlantBased = false;
+    }
+    event.preventDefault();
 
 		//call projecteatz api to fetch recipe details
 		$.ajax({
@@ -213,6 +221,8 @@ var ProjectEatz = window.ProjectEatz || {};
 				alert('An error occured updating recipe:\n' + result.body);
 				return false;
 			}
+
+      alert('Recipe updated successfully');
 			//send user to view-recipe.html
 			var url = "view-recipe.html?recipeId=" + recipeId;
 			window.location.href = url;

@@ -104,6 +104,9 @@ var ProjectEatz = window.ProjectEatz || {};
 			if (currentUser == result.createdBy){
 				$('#editRecipeButton').css('display', 'inline');
 			}
+			if (result.isPlantBased) {
+				$('#plantBasedIcon').css('display', 'inline');
+			}
 			$('#buffering').css('display','none');
 			$('#container').css('display', 'block');
 
