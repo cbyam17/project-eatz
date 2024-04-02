@@ -169,7 +169,8 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function handleForgotPassword(event){
     event.preventDefault();
-    cognitoUser.forgotPassword({
+    window.location.href = 'index.html';
+    /*cognitoUser.forgotPassword({
     onSuccess: function (result) {
         console.log('call result: ' + result);
     },
@@ -181,7 +182,6 @@ var ProjectEatz = window.ProjectEatz || {};
         var newPassword = prompt('Enter new password ' ,'');
         cognitoUser.confirmPassword(verificationCode, newPassword, this);
     }
-  });
-    
+  });*/
   }
 }(jQuery));
