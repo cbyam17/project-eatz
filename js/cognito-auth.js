@@ -170,6 +170,7 @@ var ProjectEatz = window.ProjectEatz || {};
   function handleForgotPassword(event){
     event.preventDefault();
     var cognitoUser = createCognitoUser('chef-chris');
+    console.log(cognitoUser);
     cognitoUser.forgotPassword({
     onSuccess: function (result) {
         console.log('call result: ' + result);
