@@ -169,8 +169,8 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function handleForgotPassword(event){
     event.preventDefault();
-    var cognitoUser = createCognitoUser('chef-chris');
-    console.log(cognitoUser);
+    var username = prompt('Please enter your username ','');
+    var cognitoUser = createCognitoUser(username);
     cognitoUser.forgotPassword({
     onSuccess: function (result) {
         console.log('call result: ' + result);
@@ -179,7 +179,7 @@ var ProjectEatz = window.ProjectEatz || {};
         alert(err);
     },
     inputVerificationCode() {
-        var verificationCode = prompt('Please input verification code ' ,'');
+        var verificationCode = prompt('Please input verification code (check your spam folder) ' ,'');
         var newPassword = prompt('Enter new password ' ,'');
         cognitoUser.confirmPassword(verificationCode, newPassword, this);
     }
