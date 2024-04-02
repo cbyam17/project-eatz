@@ -43,6 +43,7 @@ var ProjectEatz = window.ProjectEatz || {};
     $('#verifyForm').submit(handleVerify);
     $('#signoutButton').on('click', handleSignout);
     $('#signoutLink').on('click', handleSignout);
+    $('#forgotPasswordButton').on('click', handleForgotPassword);
   });
 
   /*
@@ -164,5 +165,23 @@ var ProjectEatz = window.ProjectEatz || {};
     event.preventDefault();
     var res = userPool.getCurrentUser().signOut();
     window.location.href = 'index.html';
+  }
+
+  function handleForgotPassword(event){
+    event.preventDefault();
+    cognitoUser.forgotPassword({
+    onSuccess: function (result) {
+        console.log('call result: ' + result);
+    },
+    onFailure: function(err) {
+        alert(err);
+    },
+    inputVerificationCode() {
+        var verificationCode = prompt('Please input verification code ' ,'');
+        var newPassword = prompt('Enter new password ' ,'');
+        cognitoUser.confirmPassword(verificationCode, newPassword, this);
+    }
+  });
+    
   }
 }(jQuery));
