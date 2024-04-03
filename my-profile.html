@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>ProjectEatz - Menu</title>
-  	<link rel="stylesheet" href="css/styles.css">
-  	<script src="js/vendor/jquery.min.js"></script>
-  	<script src="js/vendor/aws-cognito-sdk.min.js"></script>
-  	<script src="js/vendor/amazon-cognito-identity.min.js"></script>
-  	<script src="js/config.js"></script>
-  	<script src="js/cognito-auth.js"></script>
+	<title>ProjectEatz - My Profile</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/vendor/jquery.min.js"></script>
+  <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+  <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/cognito-auth.js"></script>
 	<script src="js/main-menu-helper.js"></script>
 </head>
 <body>
@@ -34,26 +34,12 @@
 		</div>
 		<div class="mainMenuContainer">
 			<p id="currentUser"></p>
-			<h1>What&#39;s on the menu?</h1>
-				<div class="menuCardContainer">
-					<div class="menuCard">
-						<a href="browse-cookbook.html">
-						  <img src="img/search-icon.png" width="50" height="50">
-							<h2>Explore recipes</h2>
-						</a>
-					</div>
-					<div class="menuCard">
-						<a href="add-recipe.html">
-						  <img src="img/plus-icon.png" width="50" height="50">
-							<h2>Add a recipe</h2>
-						</a>
-					</div>
-				</div>
-			<h1>My recipes</h1>
-			<table id="myRecipesTable" class="myRecipesTable">
+			<h1>My Saved recipes</h1>
+			<table id="browseRecipesTable" class="browseRecipesTable">
 				<thead>
 		      <th class="recipeName">Recipe</th>
 		      <th class="category">Category</th>
+		      <th class="createdBy">Created By</th>
 				</thead>
 	      <!-- tbody to be populated dynamically -->
 				<tbody></tbody>
