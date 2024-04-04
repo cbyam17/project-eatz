@@ -14,14 +14,17 @@
 <body>
   <div id="navBarContainer">
 		<ul class="navBar">
-			<li>
-				<a href="main-menu.html">Main Menu</a>
-			</li>
-			<li>
-				<!--link to signout function-->
-				<a id="signoutLink" href="#">Sign Out</a>
-			</li>
-		</ul>
+      <li>
+        <a href="main-menu.html">Main Menu</a>
+      </li>
+      <li>
+        <a href="my-profile.html">My Profile</a>
+      </li>
+      <li>
+        <!--link to signout function-->
+        <a id="signoutLink" href="#">Sign Out</a>
+      </li>
+    </ul>
 	</div>
   <div id="buffering" class="buffering">
     <img src="img/buffering.gif" alt="Buffering...">
@@ -29,8 +32,12 @@
   <div id="container" class="container" style="display: none;">
     <br>
     <a href="browse-cookbook.html">
-      <input type="button" id="cookbookButton" value="Cookbook"/>
+      <input type="button" id="cookbookButton" value="Back to cookbook"/>
     </a>
+    <br>
+    <br>
+    <input type="button" id="saveRecipeButton" value="Add to saved recipes" style="background-color: #1fc600;"/>
+    <input type="button" id="unsaveRecipeButton" value="Remove from saved recipes" style="display: none;"/>
     <h1 id="recipeName"></h1>
     <!-- <div class="imageContainer">
 				<img src="img/Burger.jpg">
@@ -50,7 +57,7 @@
     <h3>Created By</h3>
     <p id="createdBy"></p>
     <div id="actionButtonContainer" class="actionButtonContainer">
-      <input type="button" id="editRecipeButton" class="editRecipeButton" value="Edit Recipe" style="display: none;"/>
+      <input type="button" id="editRecipeButton" class="editRecipeButton" value="Edit recipe" style="display: none;"/>
     </div>
   </div>
 </body>
