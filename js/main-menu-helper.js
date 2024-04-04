@@ -2,7 +2,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
 (function scopeWrapper($) {
 
-  //redirect user to signin page if not logged in
+  //redirect user to signin page if not logged in (common flow)
   var authToken;
   ProjectEatz.authToken.then(function setAuthToken(token) {
       if (token) {
@@ -16,7 +16,7 @@ var ProjectEatz = window.ProjectEatz || {};
       window.location.href = 'signin.html';
   });
 
-  //get current user
+  //get current username (common flow)
   var poolData = {
       UserPoolId: _config.cognito.userPoolId,
       ClientId: _config.cognito.userPoolClientId
@@ -25,29 +25,8 @@ var ProjectEatz = window.ProjectEatz || {};
   if (typeof AWSCognito !== 'undefined') {
       AWSCognito.config.region = _config.cognito.region;
   }
-  var cognitoUser = userPool.getCurrentUser();
-  var currentUser = cognitoUser.username;
-
-  //get current user attributes
-  if (cognitoUser != null) {
-    cognitoUser.getSession(function (err, session) {
-      if (err) {
-        alert(err.message || JSON.stringify(err));
-        return;
-      }
-      console.log('session validity: ' + session.isValid());
-
-      // NOTE: getSession must be called to authenticate user before calling getUserAttributes
-      cognitoUser.getUserAttributes(function (err, attributes) {
-        if (err) {
-          // Handle error
-          } else {
-            // Do something with attributes
-          console.log(attributes);
-        }
-      });
-    });
-  }
+  var currentUser = userPool.getCurrentUser();
+  var currentUsername = currentUser.username;
 
 
   //wrapper function for what happens on page load
@@ -59,7 +38,7 @@ var ProjectEatz = window.ProjectEatz || {};
     //call projecteatz api to fetch recipes for logged in user
 		$.ajax({
 						method: 'GET',
-						url: _config.api.invokeUrl + '/recipe?createdBy=' + currentUser,
+						url: _config.api.invokeUrl + '/recipe?createdBy=' + currentUsername,
 						headers: {
 							'Authorization': authToken
 						},
@@ -74,7 +53,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
   function completeGetMyRecipesRequest(result){
     //populate current users
-    $('#currentUser').text('Welcome, ' + currentUser + '!');
+    $('#currentUsername').text('Welcome, ' + currentUsername + '!');
     //iterate through each recipe returned from api
     for (i=0; i<result.length; i++){
       var newRow = $('<tr>');

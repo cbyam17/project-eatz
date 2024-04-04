@@ -2,13 +2,13 @@
 <html>
 <head>
 	<title>ProjectEatz - My Profile</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <script src="js/vendor/jquery.min.js"></script>
-  <script src="js/vendor/aws-cognito-sdk.min.js"></script>
-  <script src="js/vendor/amazon-cognito-identity.min.js"></script>
-  <script src="js/config.js"></script>
-  <script src="js/cognito-auth.js"></script>
-	<script src="js/main-menu-helper.js"></script>
+  	<link rel="stylesheet" href="css/styles.css">
+  	<script src="js/vendor/jquery.min.js"></script>
+  	<script src="js/vendor/aws-cognito-sdk.min.js"></script>
+  	<script src="js/vendor/amazon-cognito-identity.min.js"></script>
+  	<script src="js/config.js"></script>
+  	<script src="js/cognito-auth.js"></script>
+	<script src="js/my-profile-helper.js"></script>
 </head>
 <body>
 	<div id="navBarContainer">
@@ -33,9 +33,13 @@
 				<image src="img/Project-Eatz.png">
 		</div>
 		<div class="mainMenuContainer">
-			<p id="currentUser"></p>
-			<h1>My Saved recipes</h1>
-			<table id="browseRecipesTable" class="browseRecipesTable">
+			<h1>About Me</h1>
+			<p id="currentUsername"></p>
+			<p id="currentUserEmail"></p>
+			<p id="isEmailVerified"></p>
+			<p id="currentUserRecipeCount"></p>
+			<h1>My Saved Recipes</h1>
+			<table id="savedRecipesTable" class="browseRecipesTable">
 				<thead>
 		      <th class="recipeName">Recipe</th>
 		      <th class="category">Category</th>
