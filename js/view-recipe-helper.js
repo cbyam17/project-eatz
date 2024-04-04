@@ -9,21 +9,21 @@ var ProjectEatz = window.ProjectEatz || {};
 
 (function scopeWrapper($) {
 
-	//redirect user to signin page if not logged in
-	var authToken;
-	ProjectEatz.authToken.then(function setAuthToken(token) {
-			if (token) {
-					authToken = token;
-			} else {
-				alert('Please sign in to access this page');
-				window.location.href = 'signin.html';
-			}
-	}).catch(function handleTokenError(error) {
-			alert(error);
-			window.location.href = 'signin.html';
-	});
+	//redirect user to signin page if not logged in (common flow)
+  var authToken;
+  ProjectEatz.authToken.then(function setAuthToken(token) {
+      if (token) {
+          authToken = token;
+      } else {
+        alert('Please sign in to access this page');
+        window.location.href = 'signin.html';
+      }
+  }).catch(function handleTokenError(error) {
+      alert(error);
+      window.location.href = 'signin.html';
+  });
 
-	//get current user
+	//get current username (common flow)
   var poolData = {
       UserPoolId: _config.cognito.userPoolId,
       ClientId: _config.cognito.userPoolClientId
@@ -32,20 +32,21 @@ var ProjectEatz = window.ProjectEatz || {};
   if (typeof AWSCognito !== 'undefined') {
       AWSCognito.config.region = _config.cognito.region;
   }
-  var currentUser = userPool.getCurrentUser().username;
+  var currentUser = userPool.getCurrentUser();
+  var currentUsername = currentUser.username;
+  //placeholder for savedBy functionality
+  var savedByIndex;
 
 	//extract the recipe id from url string (recipeId=xxx) and retrieve recipe details from API
 	var queryString = window.location.href.split('/').pop();
 	var recipeId = queryString.split('=').pop();
 
-	/*DEBUGGING ONLY: create test JSON for debugging
-	var dataStr = '{\n\t\"id\": \"123ABC\",\n\t\"name\": \"Test recipe 1\",\n\t\"category\": \"Main\",\n\t\"description\": \"Makes about 4-6 servings\",\n\t\"ingredients\": [{\n\t\t\t\"ingredient\": \"1 large yellow onion\",\n\t\t\t\"notes\": \"Finely chopped\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"2 sprigs rosemary\",\n\t\t\t\"notes\": \"Dried can be substituted, just use half\"\n\t\t},\n\t\t{\n\t\t\t\"ingredient\": \"1 cup vegetable broth\",\n\t\t\t\"notes\": \"Water can be used if you do not have broth on hand\"\n\t\t}\n\n\t],\n\t\"steps\": [\n\t\t\"Sautee onion in oil over medium heat until translucent\",\n\t\t\"Add rosemary springs and stir around for a few minutes\",\n\t\t\"Add the vegetable broth and bring to a simmer on high heat\"\n\t]\n}'
-	var dataJSON = JSON.parse(dataStr);*/
-
 	//wrapper function for what to set up event listeners on page load
   $(function onDocReady(){
 		populateRecipeDetails();
     $('#editRecipeButton').on('click', handleEditRecipe);
+    $('#saveRecipeButton').on('click', handleSaveRecipe);
+    $('#unsaveRecipeButton').on('click', handleUnsaveRecipe);
   });
 
 	function populateRecipeDetails(){
@@ -57,56 +58,67 @@ var ProjectEatz = window.ProjectEatz || {};
 							'Authorization': authToken
 						},
 						contentType: 'application/json',
-						success: completeRequest,
+						success: completeGetRecipeRequest,
 						error: function ajaxError(jqXHR, textStatus, errorThrown) {
-								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
+								console.error('Error retrieving recipe: ', textStatus, ', Details: ', errorThrown);
 								console.error('Response: ', jqXHR.responseText);
-								alert('An error occured when adding your recipe:\n' + jqXHR.responseText);
+								alert('An error occured retrieving recipe:\n' + jqXHR.responseText);
 						}
 		});
 	}
 
-		function completeRequest(result) {
-			//check result for server error (REVISIT THIS)
-			if (result.statusCode == 500){
-				alert('An error occured retrieving recipe:\n' + result.body);
-				return false;
+	function completeGetRecipeRequest(result) {
+		//check result for server error (REVISIT THIS)
+		if (result.statusCode == 500){
+			alert('An error occured retrieving recipe:\n' + result.body);
+			return false;
+		}
+
+		//get index in savedBy array of current user
+		savedByIndex = result.savedBy.indexOf(currentUsername);
+
+		//populate recipe name, category, description, createdby
+		$('#recipeName').text(result.recipeName);
+		$('#category').text(result.category);
+		$('#description').text(result.description);
+		$('#createdBy').text(result.createdBy);
+
+		//populate recipe ingredients table
+		for (i=0; i<result.ingredients.length; i++){
+			var ingredient = result.ingredients[i].ingredient;
+			var notes = result.ingredients[i].notes;
+			var ingredientItem = '';
+			if (notes != ''){
+				ingredientItem = '<li>'+ingredient+' ('+notes+')</li>';
 			}
+			else ingredientItem = '<li>'+ingredient+'</li>'
+			$('#ingredients').append(ingredientItem);
+		}
 
-			//populate recipe name, category, description, createdby
-			$('#recipeName').text(result.recipeName);
-			$('#category').text(result.category);
-			$('#description').text(result.description);
-			$('#createdBy').text(result.createdBy);
+		//populate recipe steps as ordered list
+		for (i=0; i<result.steps.length; i++){
+			var step = result.steps[i];
+			var stepItem = '<li>'+result.steps[i]+'</li>';
+			$('#steps').append(stepItem);
+		}
 
-			//populate recipe ingredients table
-			for (i=0; i<result.ingredients.length; i++){
-				var ingredient = result.ingredients[i].ingredient;
-				var notes = result.ingredients[i].notes;
-				var ingredientItem = '';
-				if (notes != ''){
-					ingredientItem = '<li>'+ingredient+' ('+notes+')</li>';
-				}
-				else ingredientItem = '<li>'+ingredient+'</li>'
-				$('#ingredients').append(ingredientItem);
-			}
+		//TO DO: render the image from AWS S3 on page
 
-			//populate recipe steps as ordered list
-			for (i=0; i<result.steps.length; i++){
-				var step = result.steps[i];
-				var stepItem = '<li>'+result.steps[i]+'</li>';
-				$('#steps').append(stepItem);
-			}
+		//if current user created recipe, show the edit recipe button
+		if (currentUsername == result.createdBy){
+			$('#editRecipeButton').css('display', 'inline');
+		}
 
-			//TO DO: render the image from AWS S3 on page
+		//if current user has saved the recipe, remove save recipe button, show unsave button
+		if (result.savedBy.includes(currentUsername)){
+			$('#saveRecipeButton').css('display','none');
+			$('#unsaveRecipeButton').css('display','inline');
+			$('#unsaveRecipeButton').css('background-color','#b53737');
+		}
 
-			//hide buffering gif and make page visible
-			if (currentUser == result.createdBy){
-				$('#editRecipeButton').css('display', 'inline');
-			}
-			$('#buffering').css('display','none');
-			$('#container').css('display', 'block');
-
+		//hide buffering gif and make page visible
+		$('#buffering').css('display','none');
+		$('#container').css('display', 'block');
 	}
 
 	//function to handle edit recipe button
@@ -114,96 +126,85 @@ var ProjectEatz = window.ProjectEatz || {};
 		var url = "update-recipe.html?recipeId=" + recipeId;
 		window.location.href = url;
 	}
+
+	//function to handle save recipe button
+	function handleSaveRecipe(event){
+		var dataJSON = {username: currentUsername};
+
+		//call projecteatz api to save recipe
+		$.ajax({
+						method: 'POST',
+						url: _config.api.invokeUrl + '/recipe/' + recipeId + '/save',
+						headers: {
+							'Authorization': authToken
+						},
+						data: JSON.stringify(dataJSON),
+						contentType: 'application/json',
+						success: completeSaveRecipeRequest,
+						error: function ajaxError(jqXHR, textStatus, errorThrown) {
+								console.error('Error saving recipe: ', textStatus, ', Details: ', errorThrown);
+								console.error('Response: ', jqXHR.responseText);
+								alert('An error occured saving recipe:\n' + jqXHR.responseText);
+						}
+		});
+	}
+
+	function completeSaveRecipeRequest(result){
+		//check result for server error (REVISIT THIS)
+		if (result.statusCode == 500){
+			alert('An error occured saving recipe:\n' + result.body);
+			return false;
+		}
+
+		//refresh page
+		alert('Recipe saved! Find it under saved recipes in My Profile');
+		var url = "view-recipe.html?recipeId=" + recipeId;
+		window.location.href = url;			
+	}
+
+	//function to handle unsave recipe button
+	function handleUnsaveRecipe(event){
+		var dataJSON = {
+			username: currentUsername,
+			index: savedByIndex
+		};
+
+		//call projecteatz api to unsave recipe
+		$.ajax({
+						method: 'DELETE',
+						url: _config.api.invokeUrl + '/recipe/' + recipeId + '/save',
+						headers: {
+							'Authorization': authToken
+						},
+						data: JSON.stringify(dataJSON),
+						contentType: 'application/json',
+						success: completeUnsaveRecipeRequest,
+						error: function ajaxError(jqXHR, textStatus, errorThrown) {
+								console.error('Error removing from saved recipes: ', textStatus, ', Details: ', errorThrown);
+								console.error('Response: ', jqXHR.responseText);
+								alert('An error occured removing from saved recipes:\n' + jqXHR.responseText);
+						}
+		});
+	}
+
+	function completeUnsaveRecipeRequest(result){
+		//check result for server error (REVISIT THIS)
+		if (result.statusCode == 500){
+			alert('An error occured removing from saved recipes:\n' + result.body);
+			return false;
+		}
+
+		//refresh page
+		alert('Recipe removed from saved recipes in My Profile');
+		var url = "view-recipe.html?recipeId=" + recipeId;
+		window.location.href = url;			
+	}
+
 }(jQuery));
 
 /*
 
 
-		//get recipe details then parse response and build html for page
-		fetch(req, {
-			method: 'GET',
-			headers: {
-				'authorizationToken': authToken
-			}
-		})
-		  .then(response => response.json())
-		  .then(data => populateRecipeDetails(data));
-
-		function populateRecipeDetails(dataJSON){
-			//add recipe name
-			var tag = document.createElement("h1");
-			var text = document.createTextNode(dataJSON.recipeName);
-			tag.appendChild(text);
-			var element = document.getElementById("recipeName");
-			element.appendChild(tag);
-
-			// Add image
-			var imgData = document.createElement("img");
-			var categoryKey = dataJSON.category + "/";
-			var recipeKey = categoryKey + id;
-			loadImage(recipeKey, imgData);
-			var element = document.getElementById("picture");
-			element.appendChild(imgData);
-
-			//add recipe description
-			var tag = document.createElement("p");
-			var text = document.createTextNode(dataJSON.description);
-			tag.appendChild(text);
-			var element = document.getElementById("description");
-			element.appendChild(tag);
-
-			//add recipe category
-			var tag = document.createElement("p");
-			var text = document.createTextNode(dataJSON.category);
-			tag.appendChild(text);
-			var element = document.getElementById("category");
-			element.appendChild(tag);
-
-			//add recipe ingredients table
-			var ingredients = dataJSON.ingredients;
-
-			//create new table
-			var table = document.createElement("table");
-			var tableBody = document.createElement("tbody");
-			for (i=0; i<ingredients.length; i++){
-				//console.log(ingredients[i]);
-				var tableRow = document.createElement("tr");
-				var ingredientData = document.createElement("td");
-				var ingredientText;
-				if (ingredients[i].notes !== ''){
-					ingredientText = document.createTextNode(ingredients[i].amount + ' ' + ingredients[i].ingredient + ' (' + ingredients[i].notes + ')');
-				}
-				else{
-					ingredientText = document.createTextNode(ingredients[i].amount + ' ' + ingredients[i].ingredient);
-				}
-				ingredientData.appendChild(ingredientText);
-				tableRow.appendChild(ingredientData);
-				tableBody.appendChild(tableRow);
-			}
-			//add table head and body to new table, then add new table to ingredients
-			table.appendChild(tableBody);
-			var element = document.getElementById("ingredients");
-			element.appendChild(table);
-
-
-			//add recipe directions table
-			var directions = dataJSON.directions;
-			var table = document.createElement("table");
-			//for each direction, build table body
-			var tableBody = document.createElement("tbody");
-			for (i=0; i<directions.length; i++){
-				//console.log(directions[i]);
-				var tableRow = document.createElement("tr");
-				var tableData = document.createElement("td");
-				var direction = document.createTextNode(i+1+'. '+directions[i]);
-				tableData.appendChild(direction);
-				tableRow.appendChild(tableData);
-				tableBody.appendChild(tableRow);
-			}
-			//add table body to new table, then add new table to directions
-			table.appendChild(tableBody);
-			var element = document.getElementById("directions");
-			element.appendChild(table);
 
 			function loadImage (key, imgData) {
 				//Variables to get the picture from S3
@@ -242,18 +243,4 @@ var ProjectEatz = window.ProjectEatz || {};
 				});
 
 			}
-		}
-
-$(document).ready(function () {
-
-		//function to go to update recipe page when edit recipe button is clicked
-		//<a href="update-recipe.html?recipeId=4QbeZj-vibNdBi2AUHS6zQ"> <!-- hardcoded now, but will need to be done programmatically-->
-	$("#editRecipe").on('click', function() {
-		var queryString = window.location.href.split('/').pop();
-		var recipeId = queryString.split('=').pop();
-		var url = "update-recipe.html?recipeId=" + recipeId;
-		window.location.href = url;
-	});
-});
-
-*/
+		}*/
