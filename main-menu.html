@@ -9,56 +9,43 @@
   	<script src="js/config.js"></script>
   	<script src="js/cognito-auth.js"></script>
 	<script src="js/main-menu-helper.js"></script>
+	<script src="components/navbar.js"></script>
 </head>
 <body>
-	<div id="navBarContainer">
-		<ul class="navBar">
-			<li>
-				<a href="main-menu.html">Main Menu</a>
-			</li>
-			<li>
-				<a href="my-profile.html">My Profile</a>
-			</li>
-			<li>
-				<!--link to signout function-->
-				<a id="signoutLink" href="#">Sign Out</a>
-			</li>
-		</ul>
-	</div>
-	<div id="buffering" class="buffering">
-    <img src="img/buffering.gif" alt="Buffering...">
-  </div>
-	<div id="container" class="container" style="display: none;">
-		<div class="headerContainer">
-				<image src="img/Project-Eatz.png">
-		</div>
-		<div class="mainMenuContainer">
-			<p id="currentUsername"></p>
-			<h1>What&#39;s on the menu?</h1>
-				<div class="menuCardContainer">
-					<div class="menuCard">
-						<a href="browse-cookbook.html">
-						  <img src="img/search-icon.png" width="50" height="50">
-							<h2>Explore cookbook</h2>
-						</a>
+	<navbar-component></navbar-component>
+	<main>
+		<div id="buffering" class="buffering">
+	    	<img src="img/buffering.gif" alt="Buffering...">
+  		</div>
+		<div id="container" class="container" style="display: none;">
+			<div class="mainMenuContainer">
+				<p id="currentUsername"></p>
+				<h1>What&#39;s on the menu?</h1>
+					<div class="menuCardContainer">
+						<div class="menuCard">
+							<a href="browse-cookbook.html">
+						  		<img src="img/search-icon.png" width="50" height="50">
+								<h2>Explore cookbook</h2>
+							</a>
+						</div>
+						<div class="menuCard">
+							<a href="add-recipe.html">
+						  		<img src="img/plus-icon.png" width="50" height="50">
+								<h2>Add a recipe</h2>
+							</a>
+						</div>
 					</div>
-					<div class="menuCard">
-						<a href="add-recipe.html">
-						  <img src="img/plus-icon.png" width="50" height="50">
-							<h2>Add a recipe</h2>
-						</a>
-					</div>
-				</div>
-			<h1>My recipes</h1>
-			<table id="myRecipesTable" class="myRecipesTable">
-				<thead>
-		      <th class="recipeName">Recipe</th>
-		      <th class="category">Category</th>
-				</thead>
-	      <!-- tbody to be populated dynamically -->
-				<tbody></tbody>
-	    </table>
+				<h1>My recipes</h1>
+				<table id="myRecipesTable" class="myRecipesTable">
+					<thead>
+		    			<th class="recipeName">Recipe</th>
+		      			<th class="category">Category</th>
+					</thead>
+	      			<!-- tbody to be populated dynamically -->
+					<tbody></tbody>
+	    		</table>
+			</div>
 		</div>
-	</div>
+	</main>
 </body>
 </html>

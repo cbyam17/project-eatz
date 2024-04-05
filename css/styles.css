@@ -1,9 +1,51 @@
 /* CSS stylesheet for site content */
 
+/* nav bar style elements*/
+header {
+  background-color: #343D52;
+  display: flex;
+}
+
+header nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+header nav li {
+  list-style: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+header nav li img {
+  vertical-align: middle;
+  width: 40px;
+  margin: 0;
+  padding: 5px;
+}
+        
+header nav li a {
+  vertical-align: middle;
+  font-size: 1.00em;
+  text-decoration: none;
+  color: white;
+  padding: 5px;
+  margin: 5px;
+}
+
+/* footer style elements*/
+footer {
+  background-color: #343D52;
+  display: flex;
+}
+
+/* div elements */
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: auto;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 div.container {
@@ -19,7 +61,7 @@ div.imageContainer {
 div.imageContainer img {
   width: 50%; /* Will shrink image to 30% of its original width */
   height: auto;
-}​
+}
 
 
 div.container a {
@@ -40,26 +82,6 @@ div.browseCookbookContainer h1{
 
 div.browseCookbookContainer p{
   text-align: left;
-}
-
-ul.navBar {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #343D52;
-}
-
-ul.navBar li{
-  float: left;
-}
-
-ul.navBar li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 10px 10px;
-  text-decoration: none;
 }
 
 div.headerContainer {
@@ -128,13 +150,13 @@ table.browseRecipesTable{
 }
 
 table.browseRecipesTable td{
-  border: 1px solid #B3B3B3;
+  /*border: 1px solid #B3B3B3;*/
   padding: 5px;
   font-size: 12px;
 }
 
 table.browseRecipesTable th{
-  border: 1px solid #343D52;
+  /*border: 1px solid #343D52;*/
   background-color: #343D52;
   color: white;
   text-align: left;
