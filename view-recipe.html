@@ -10,55 +10,45 @@
   <script src="js/config.js"></script>
   <script src="js/cognito-auth.js"></script>
   <script src="js/view-recipe-helper.js"></script>
+  <script src="components/navbar.js"></script>
 </head>
 <body>
-  <div id="navBarContainer">
-		<ul class="navBar">
-      <li>
-        <a href="main-menu.html">Main Menu</a>
-      </li>
-      <li>
-        <a href="my-profile.html">My Profile</a>
-      </li>
-      <li>
-        <!--link to signout function-->
-        <a id="signoutLink" href="#">Sign Out</a>
-      </li>
-    </ul>
-	</div>
-  <div id="buffering" class="buffering">
-    <img src="img/buffering.gif" alt="Buffering...">
-  </div>
-  <div id="container" class="container" style="display: none;">
-    <br>
-    <a href="browse-cookbook.html">
-      <input type="button" id="cookbookButton" value="Back to cookbook"/>
-    </a>
-    <br>
-    <br>
-    <input type="button" id="saveRecipeButton" value="Add to saved recipes" style="background-color: #1fc600;"/>
-    <input type="button" id="unsaveRecipeButton" value="Remove from saved recipes" style="display: none;"/>
-    <h1 id="recipeName"></h1>
-    <!-- <div class="imageContainer">
-				<img src="img/Burger.jpg">
-		</div> -->
-    <h2>Category</h2>
-    <p id="category"></p>
-    <h2>Description</h2>
-    <p id="description"></p>
-    <h2>Ingredients</h2>
-    <ul id="ingredients">
-      <!-- list items to be generated dynamically -->
-    </ul>
-    <h2>Steps</h2>
-    <ol id="steps">
-      <!-- list items to be generated dynamically -->
-    </ol>
-    <h3>Created By</h3>
-    <p id="createdBy"></p>
-    <div id="actionButtonContainer" class="actionButtonContainer">
-      <input type="button" id="editRecipeButton" class="editRecipeButton" value="Edit recipe" style="display: none;"/>
+  <navbar-component></navbar-component>
+  <main>
+    <div id="buffering" class="buffering">
+      <img src="img/buffering.gif" alt="Buffering...">
     </div>
-  </div>
+    <div id="container" class="container" style="display: none;">
+      <br>
+      <a href="browse-cookbook.html">
+        <input type="button" id="cookbookButton" value="Back to cookbook"/>
+      </a>
+      <br>
+      <br>
+      <input type="button" id="saveRecipeButton" value="Add to saved recipes" style="background-color: #1fc600;"/>
+      <input type="button" id="unsaveRecipeButton" value="Remove from saved recipes" style="display: none;"/>
+      <h1 id="recipeName"></h1>
+      <!-- <div class="imageContainer">
+  				<img src="img/Burger.jpg">
+  		</div> -->
+      <h2>Category</h2>
+      <p id="category"></p>
+      <h2>Description</h2>
+      <p id="description"></p>
+      <h2>Ingredients</h2>
+      <ul id="ingredients">
+        <!-- list items to be generated dynamically -->
+      </ul>
+      <h2>Steps</h2>
+      <ol id="steps">
+        <!-- list items to be generated dynamically -->
+      </ol>
+      <h3>Created By</h3>
+      <p id="createdBy"></p>
+      <div id="actionButtonContainer" class="actionButtonContainer">
+        <input type="button" id="editRecipeButton" class="editRecipeButton" value="Edit recipe" style="display: none;"/>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
