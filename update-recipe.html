@@ -12,78 +12,68 @@
   <script src="js/cognito-auth.js"></script>
   <script src="js/update-recipe-helper.js"></script>
   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.834.0.min.js"></script>
+  <script src="components/navbar.js"></script>
 </head>
 <body>
-  <div id="navBarContainer">
-		<ul class="navBar">
-      <li>
-        <a href="main-menu.html">Main Menu</a>
-      </li>
-      <li>
-        <a href="my-profile.html">My Profile</a>
-      </li>
-      <li>
-        <!--link to signout function-->
-        <a id="signoutLink" href="#">Sign Out</a>
-      </li>
-    </ul>
-	</div>
+  <navbar-component></navbar-component>
   <div id="buffering" class="buffering">
     <img src="img/buffering.gif" alt="Buffering...">
   </div>
-  <div id="container" class="container" style="display: none;">
-    <form class="formControl" name="updateRecipeForm" id="updateRecipeForm" accept-charset="utf-8">
-      <h1>Edit Recipe</h1>
-      <p>To save your changes, click "Submit" at the bottom of the page.</p>
-      <input type="text" name="recipeName" id="recipeName" class="recipeName" placeholder="Recipe name"/>
-      <br><br>
-      <select name="category" id="category">
-        <option selected>--select category--</option>
-        <option value="Appetizer">Appetizer</option>
-        <option value="Main">Main</option>
-        <option value="Side">Side</option>
-        <option value="Dessert">Dessert</option>
-        <option value="Drink">Drink</option>
-      </select>
-      <br><br>
-      <textarea name="description" id="description" rows="3" placeholder="Description, number of servings, special tips, substitutions, etc."></textarea>
-      <p>Ingredients</p>
-      <table name="ingredientsTable" id="ingredientsTable">
-        <!-- ingredients table body to be generated dynamically -->
-        <tbody></tbody>
-        <tfoot>
-          <tr>
-            <td>
-              <input type="button" id="addIngredientButton" class="addButton" value="Add"/>
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
-      <p>Steps</p>
-      <table name="stepsTable" id= "stepsTable">
-        <!-- steps table body to be generated dynamically -->
-        <tbody></tbody>
-        <tfoot>
-          <tr>
-            <td>
-              <input type="button" id="addStepButton" class="addButton" value="Add"/>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-      <!--
-      <p>Add or change picture</p>
-      <div id="imageContainer" class="imageContainer"></div>
-      <br><br>
-      <input type="file" name="image" id="image"/>-->
-      <br><br>
-      <div id="formActionButtons" class="formActionButtons">
-        <input type="button" id="cancelUpdateRecipeButton" class="cancelButton" value="Cancel"/>
-        <input type="submit" value="Submit">
-      </div>
-    </form>
-  </div>
+  <main>
+    <div id="container" class="container" style="display: none;">
+      <form class="formControl" name="updateRecipeForm" id="updateRecipeForm" accept-charset="utf-8">
+        <h1>Edit Recipe</h1>
+        <p>To save your changes, click "Submit" at the bottom of the page.</p>
+        <input type="text" name="recipeName" id="recipeName" class="recipeName" placeholder="Recipe name"/>
+        <br><br>
+        <select name="category" id="category">
+          <option selected>--select category--</option>
+          <option value="Appetizer">Appetizer</option>
+          <option value="Main">Main</option>
+          <option value="Side">Side</option>
+          <option value="Dessert">Dessert</option>
+          <option value="Drink">Drink</option>
+        </select>
+        <br><br>
+        <textarea name="description" id="description" rows="3" placeholder="Description, number of servings, special tips, substitutions, etc."></textarea>
+        <p>Ingredients</p>
+        <table name="ingredientsTable" id="ingredientsTable">
+          <!-- ingredients table body to be generated dynamically -->
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <input type="button" id="addIngredientButton" class="addButton" value="Add"/>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+        <p>Steps</p>
+        <table name="stepsTable" id= "stepsTable">
+          <!-- steps table body to be generated dynamically -->
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <input type="button" id="addStepButton" class="addButton" value="Add"/>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        <!--
+        <p>Add or change picture</p>
+        <div id="imageContainer" class="imageContainer"></div>
+        <br><br>
+        <input type="file" name="image" id="image"/>-->
+        <br><br>
+        <div id="formActionButtons" class="formActionButtons">
+          <input type="button" id="cancelUpdateRecipeButton" class="cancelButton" value="Cancel"/>
+          <input type="submit" value="Submit">
+        </div>
+      </form>
+    </div>
+  </main>
 </body>
 </html>
