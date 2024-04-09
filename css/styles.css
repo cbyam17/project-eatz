@@ -34,10 +34,23 @@ header nav li a {
   margin: 5px;
 }
 
-/* footer style elements*/
-footer {
-  background-color: #343D52;
+/* pagination elements */
+
+div.paginationContainer{
   display: flex;
+  justify-content: center;
+}
+
+div.paginationContainer input[type=button]{
+  width: auto;
+  color: white;
+  border: none;
+  background-color: #343D52;
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 3px;
+  margin: 3px;
+  cursor: pointer;
 }
 
 /* div elements */
@@ -186,13 +199,13 @@ table.myRecipesTable{
 }
 
 table.myRecipesTable td{
-  border: 1px solid #B3B3B3;
+  /*border: 1px solid #B3B3B3;*/
   padding: 5px;
   font-size: 12px;
 }
 
 table.myRecipesTable th{
-  border: 1px solid #343D52;
+  /*order: 1px solid #343D52;*/
   background-color: #343D52;
   color: white;
   text-align: left;

@@ -8,6 +8,9 @@ var ProjectEatz = window.ProjectEatz || {};
 
 (function scopeWrapper($) {
 
+	//global var declarations
+  var rowsPerPage = 10;
+
   //redirect user to signin page if not logged in
   var category;
   var authToken;
@@ -25,35 +28,31 @@ var ProjectEatz = window.ProjectEatz || {};
 
   //functions to perform on page load
 	$(function onDocReady(){
-    $('#viewAppsButton').on('click', handleViewApps);
-    $('#viewMainsButton').on('click', handleViewMains);
-    $('#viewSidesButton').on('click', handleViewSides);
-    $('#viewDessertsButton').on('click', handleViewDesserts);
-    $('#viewDrinksButton').on('click', handleViewDrinks);
+    $('#viewAppsButton').on('click', function(category){
+    	handleViewRecipes('Appetizer');
+    });
+    $('#viewMainsButton').on('click', function(category){
+    	handleViewRecipes('Main');
+    });
+    $('#viewSidesButton').on('click', function(category){
+    	handleViewRecipes('Side');
+    });
+    $('#viewSoupsButton').on('click', function(category){
+    	handleViewRecipes('Soup');
+    });
+    $('#viewDessertsButton').on('click', function(category){
+    	handleViewRecipes('Dessert');
+    });
+    $('#viewDrinksButton').on('click', function(category){
+    	handleViewRecipes('Drink');
+    });
 	});
 
-  function handleViewApps(){
-    category = 'Appitizer';
-    getRecipesByCategory(category);
-  }
-
-  function handleViewMains(){
-    category = 'Main';
-    getRecipesByCategory(category);
-  }
-
-  function handleViewSides(){
-    category = 'Side';
-    getRecipesByCategory(category);
-  }
-
-  function handleViewDesserts(){
-    category = 'Dessert';
-    getRecipesByCategory(category);
-  }
-
-  function handleViewDrinks(){
-    category = 'Drink';
+  function handleViewRecipes(category){
+  	clearRecipesTable();
+  	showBufferingGIF();
+  	clearPagination();
+  	//get rid of current pagination div
     getRecipesByCategory(category);
   }
 
@@ -61,24 +60,22 @@ var ProjectEatz = window.ProjectEatz || {};
   function getRecipesByCategory(category){
     //call projecteatz api to fetch recipes
 		$.ajax({
-						method: 'GET',
-						url: _config.api.invokeUrl + '/recipe?category=' + category,
-						headers: {
-							'Authorization': authToken
-						},
-						success: completeGetRecipesByCategoryRequest,
-						error: function ajaxError(jqXHR, textStatus, errorThrown) {
-								console.error('Error adding recipe: ', textStatus, ', Details: ', errorThrown);
-								console.error('Response: ', jqXHR.responseText);
-								alert('An error occured getting recipes:\n' + jqXHR.responseText);
-						}
+			method: 'GET',
+			url: _config.api.invokeUrl + '/recipe?category=' + category,
+			headers: {
+				'Authorization': authToken
+			},
+			success: completeGetRecipesByCategoryRequest,
+			error: function ajaxError(jqXHR, textStatus, errorThrown) {
+				console.error('Error retrieving recipes: ', textStatus, ', Details: ', errorThrown);
+				console.error('Response: ', jqXHR.responseText);
+				alert('An error occured retrieving recipes:\n' + jqXHR.responseText);
+			}
 		});
   }
 
   function completeGetRecipesByCategoryRequest(result){
-    //remove current table rows
-    $('#browseRecipesTable tbody tr').remove();
-    //iterate through each recipe returned from api
+    //iterate through each recipe returned from api and build full table
     for (i=0; i<result.length; i++){
       var newRow = $('<tr>');
       var cols = '';
@@ -87,13 +84,75 @@ var ProjectEatz = window.ProjectEatz || {};
       cols += '<td>' + result[i].createdBy + '</td>';
       newRow.append(cols);
     	$('#browseRecipesTable tbody').append(newRow);
+    	//only show first page of results
+    	if (i>=rowsPerPage){
+    		newRow.css('display','none');
+    	}
+    }
+
+    //get total pages in result
+    var totalPages = Math.ceil(result.length/rowsPerPage);
+    var paginationDiv = document.getElementById("paginationContainer");
+
+    //pouplate pagination div
+    for (i=0; i<totalPages; i++){
+    	var pageNum = i+1;
+    	//add page button
+    	pageButton = document.createElement('input');
+    	pageButton.type = 'button';
+    	pageButton.value = pageNum;
+    	pageButton.id = 'pageButton'+pageNum
+    	//on click, render active page
+    	pageButton.addEventListener('click', function(event){
+    		renderTablePage(event);
+    	});
+    	paginationDiv.append(pageButton);
     }
 
     //TO DO: add thumbnail images to each recipe (put in table/grid view)
 
     //hide buffering gif and make page visible
-    //$('#buffering').css('display','none');
-    $('#recipesTableContainer').css('display', 'block');
+    hideBufferingGIF();
+    showRecipesTable();
+  }
+
+  //iterate through table to show only active page
+  function renderTablePage(event){
+  	var pageNum = event.srcElement.value;
+  	var minIndex = ((pageNum-1) * rowsPerPage) + 1;
+  	var maxIndex = (pageNum * rowsPerPage);
+  	var table = document.getElementById("browseRecipesTable");
+  	for (var i=1,row;row=table.rows[i]; i++) {
+  		//if row outside of page range, make hidden, else display it
+  		if (i<minIndex || i>maxIndex){
+  			row.style.display = 'none';
+  		}
+  		else{
+  			row.style.display = '';
+  		}
+  	}
+  }
+
+  function showRecipesTable(){
+  	$('#recipesTableContainer').css('display', 'block');
+  }
+
+  function clearRecipesTable(){
+  	$('#recipesTableContainer').css('display', 'none');
+  	//remove current table rows
+    $('#browseRecipesTable tbody tr').remove();
+  }
+
+   function showBufferingGIF(){
+  	$('#buffering').css('display','block');
+  }
+
+  function hideBufferingGIF(){
+  	$('#buffering').css('display','none');
+  }
+
+  function clearPagination(){
+  	$('#paginationContainer').empty();
   }
 
 }(jQuery));
