@@ -8,8 +8,9 @@ var ProjectEatz = window.ProjectEatz || {};
 
 (function scopeWrapper($) {
 
-	//global var declarations
-  var rowsPerPage = 10;
+  //global var declarations for pagination
+  var itemsPerPage = 10;
+  var currentPage = 1;
 
   //redirect user to signin page if not logged in
   var category;
@@ -28,6 +29,7 @@ var ProjectEatz = window.ProjectEatz || {};
 
   //functions to perform on page load
 	$(function onDocReady(){
+		getFeaturedRecipe();
     $('#viewAppsButton').on('click', function(category){
     	handleViewRecipes('Appetizer');
     });
@@ -48,11 +50,43 @@ var ProjectEatz = window.ProjectEatz || {};
     });
 	});
 
+	function getFeaturedRecipe(){
+		//call projecteatz api to fetch recipe details
+		$.ajax({
+			method: 'GET',
+			url: _config.api.invokeUrl + '/recipe/' + _config.api.featuredId, //replace in config.js,
+			headers: {
+				'Authorization': authToken
+			},
+			contentType: 'application/json',
+			success: completeGetFeaturedRecipeRequest,
+			error: function ajaxError(jqXHR, textStatus, errorThrown) {
+				console.error('Error retrieving recipe: ', textStatus, ', Details: ', errorThrown);
+				console.error('Response: ', jqXHR.responseText);
+				alert('An error occured retrieving recipe:\n' + jqXHR.responseText);
+			}
+		});
+	}
+
+	function completeGetFeaturedRecipeRequest(result) {
+		//check result for server error (REVISIT THIS)
+		if (result.statusCode == 500){
+			alert('An error occured retrieving recipe:\n' + result.body);
+			return false;
+		}
+
+		//populate browse recipes table
+		var tbody = document.querySelector('#featuredRecipeTable tbody');
+    var row = '<tr><td><a href="view-recipe.html?recipeId='+result.id+'">'+result.recipeName+'</a></td><td>'+result.category+'</td><td>'+result.createdBy+'</td></tr>';
+    tbody.innerHTML += row;
+    //show container, hide buffering gif
+    $('#container').css('display', '');
+    $('#bufferingInitial').css('display', 'none');
+   }
+
   function handleViewRecipes(category){
-  	clearRecipesTable();
+  	hideRecipesTable();
   	showBufferingGIF();
-  	clearPagination();
-  	//get rid of current pagination div
     getRecipesByCategory(category);
   }
 
@@ -74,85 +108,68 @@ var ProjectEatz = window.ProjectEatz || {};
 		});
   }
 
+  //build paginated browse recipes table
   function completeGetRecipesByCategoryRequest(result){
-    //iterate through each recipe returned from api and build full table
-    for (i=0; i<result.length; i++){
-      var newRow = $('<tr>');
-      var cols = '';
-      cols += '<td><a href="' + 'view-recipe.html?recipeId=' + result[i].id + '">' + result[i].recipeName + '</a></td>';
-      cols += '<td>' + result[i].category + '</td>';
-      cols += '<td>' + result[i].createdBy + '</td>';
-      newRow.append(cols);
-    	$('#browseRecipesTable tbody').append(newRow);
-    	//only show first page of results
-    	if (i>=rowsPerPage){
-    		newRow.css('display','none');
-    	}
+    var paginatedData = paginate(result, currentPage);
+    displayData(paginatedData);
+    renderPagination(result);
+  }
+
+  //paginate table data
+  function paginate(data, page) {
+    var startIndex = (page - 1) * itemsPerPage;
+    var endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  }
+
+  //display paginated table data
+  function displayData(data) {
+    var tbody = document.querySelector('#browseRecipesTable tbody');
+    tbody.innerHTML = '';
+    data.forEach(function(item) {
+      var row = '<tr><td><a href="view-recipe.html?recipeId='+item.id+'">'+item.recipeName+'</a></td><td>'+item.category+'</td><td>'+item.createdBy+'</td></tr>';
+      tbody.innerHTML += row;
+    });
+  }
+
+  //render pagination below table
+  function renderPagination(data) {
+    var pagination = document.querySelector('#pagination');
+    pagination.innerHTML = "";
+
+    var totalPages = Math.ceil(data.length / itemsPerPage);
+
+    for (var i= 1; i<=totalPages; i++) {
+      var button = document.createElement("button");//input?
+      button.innerText = i;
+      button.addEventListener("click", function() {
+        currentPage = parseInt(this.innerText);
+        var paginatedData = paginate(data, currentPage);
+        displayData(paginatedData);
+        renderPagination(data);
+      });
+      pagination.appendChild(button);
     }
 
-    //get total pages in result
-    var totalPages = Math.ceil(result.length/rowsPerPage);
-    var paginationDiv = document.getElementById("paginationContainer");
-
-    //pouplate pagination div
-    for (i=0; i<totalPages; i++){
-    	var pageNum = i+1;
-    	//add page button
-    	pageButton = document.createElement('input');
-    	pageButton.type = 'button';
-    	pageButton.value = pageNum;
-    	pageButton.id = 'pageButton'+pageNum
-    	//on click, render active page
-    	pageButton.addEventListener('click', function(event){
-    		renderTablePage(event);
-    	});
-    	paginationDiv.append(pageButton);
-    }
-
-    //TO DO: add thumbnail images to each recipe (put in table/grid view)
-
-    //hide buffering gif and make page visible
+    //hid buffering gif, show page
     hideBufferingGIF();
     showRecipesTable();
   }
 
-  //iterate through table to show only active page
-  function renderTablePage(event){
-  	var pageNum = event.srcElement.value;
-  	var minIndex = ((pageNum-1) * rowsPerPage) + 1;
-  	var maxIndex = (pageNum * rowsPerPage);
-  	var table = document.getElementById("browseRecipesTable");
-  	for (var i=1,row;row=table.rows[i]; i++) {
-  		//if row outside of page range, make hidden, else display it
-  		if (i<minIndex || i>maxIndex){
-  			row.style.display = 'none';
-  		}
-  		else{
-  			row.style.display = '';
-  		}
-  	}
-  }
-
   function showRecipesTable(){
-  	$('#recipesTableContainer').css('display', 'block');
+  	$('#recipesTableContainer').css('display', '');
   }
 
-  function clearRecipesTable(){
+  function hideRecipesTable(){
   	$('#recipesTableContainer').css('display', 'none');
-  	//remove current table rows
-    $('#browseRecipesTable tbody tr').remove();
   }
 
    function showBufferingGIF(){
-  	$('#buffering').css('display','block');
+  	$('#buffering').css('display','');
   }
 
   function hideBufferingGIF(){
   	$('#buffering').css('display','none');
-  }
-
-  function clearPagination(){
-  	$('#paginationContainer').empty();
   }
 
 }(jQuery));

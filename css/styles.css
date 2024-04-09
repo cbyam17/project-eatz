@@ -36,21 +36,9 @@ header nav li a {
 
 /* pagination elements */
 
-div.paginationContainer{
+div.pagination{
   display: flex;
   justify-content: center;
-}
-
-div.paginationContainer input[type=button]{
-  width: auto;
-  color: white;
-  border: none;
-  background-color: #343D52;
-  font-size: 14px;
-  border-radius: 5px;
-  padding: 3px;
-  margin: 3px;
-  cursor: pointer;
 }
 
 /* div elements */
