@@ -34,10 +34,11 @@ header nav li a {
   margin: 5px;
 }
 
-/* footer style elements*/
-footer {
-  background-color: #343D52;
+/* pagination elements */
+
+div.pagination{
   display: flex;
+  justify-content: center;
 }
 
 /* div elements */
@@ -186,13 +187,13 @@ table.myRecipesTable{
 }
 
 table.myRecipesTable td{
-  border: 1px solid #B3B3B3;
+  /*border: 1px solid #B3B3B3;*/
   padding: 5px;
   font-size: 12px;
 }
 
 table.myRecipesTable th{
-  border: 1px solid #343D52;
+  /*order: 1px solid #343D52;*/
   background-color: #343D52;
   color: white;
   text-align: left;
