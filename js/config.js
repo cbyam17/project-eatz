@@ -5,7 +5,8 @@ window._config = {
         region: 'us-east-1'
     },
     api: {
-        invokeUrl: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/prod'
+        invokeUrl: 'https://d8qga9j6ob.execute-api.us-east-1.amazonaws.com/prod',
+        featuredId: 'I1l-Z8npWM4'
     },
     s3: {
       apiVersion: '2006-03-01',

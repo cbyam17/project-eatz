@@ -15,10 +15,10 @@
 <body>
   <navbar-component></navbar-component>
   <main>
-    <!--<div id="buffering" class="buffering">
+    <div id="bufferingInitial" class="buffering">
       <img src="img/buffering.gif" alt="Buffering...">
-    </div>-->
-    <div id="container" class="container">
+    </div>
+    <div id="container" class="container" style="display: none;">
       <!-- <div class="headerContainer">
   				<image src="img/Project-Eatz.png">
   		</div> -->
@@ -26,11 +26,15 @@
         <h1>Browse cookbook</h1>
         <p>Let&#39;s find something to eat. Click on a category to get started.</p>
         <input type="button" id="viewAppsButton" value="Appetizers"/>
-        <input type="button" id="viewMainsButton" value="Main Dishes"/>
+        <input type="button" id="viewMainsButton" value="Mains"/>
         <input type="button" id="viewSidesButton" value="Sides"/>
+        <input type="button" id="viewSoupsButton" value="Soups"/>
         <input type="button" id="viewDessertsButton" value="Desserts"/>
         <input type="button" id="viewDrinksButton" value="Drinks"/>
         <br><br>
+        <div id="buffering" class="buffering" style="display: none;">
+          <img src="img/buffering.gif" alt="Buffering...">
+        </div>
         <div id="recipesTableContainer" style="display: none;">
           <!-- table for recipes -->
           <table id="browseRecipesTable" class="browseRecipesTable">
@@ -42,7 +46,18 @@
             <!-- tbody to be populated dynamically -->
             <tbody></tbody>
           </table>
+          <div class="pagination" id="pagination"></div>
         </div>
+        <h2>Featured recipe</h2>
+        <table id="featuredRecipeTable" class="browseRecipesTable">
+            <thead>
+              <th class="recipeName">Recipe</th>
+              <th class="category">Category</th>
+              <th class="createdBy">Created By</th>
+            </thead>
+            <!-- tbody to be populated dynamically -->
+            <tbody></tbody>
+        </table>
       </div>
     </div>
   </main>
